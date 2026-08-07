@@ -223,3 +223,6 @@
 例えば、最近注目されているRails 8の最新機能について。
 基本的なCRUD機能や認証周りはMVPとして実装しますが、`Sidekiq` や `whenever` を用いた高度なバックグラウンドジョブ処理に関しては、**本リリース後に組み込む方向で検討**するのが良いかと考えています。
 まずは基本機能の実装とデプロイまでのキャッチアップを行い、アプリが安定して稼働する技術的な検証をした上で、段階的に新技術を組み込むかどうかを判断する形が理想と考えます。
+
+画面遷移図
+https://www.figma.com/design/JnysLupKoiurULRAZRzg1J/My-Cook-Concierge?node-id=2-235&t=iqOV8iVJABXznArT-1
