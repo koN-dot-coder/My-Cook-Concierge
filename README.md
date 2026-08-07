@@ -226,3 +226,6 @@
 
 画面遷移図
 https://www.figma.com/design/JnysLupKoiurULRAZRzg1J/My-Cook-Concierge?node-id=2-235&t=iqOV8iVJABXznArT-1
+
+ER図
+https://gyazo.com/0397ceb09d814a90180d1628e7ad005d
