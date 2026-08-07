@@ -228,4 +228,4 @@
 https://www.figma.com/design/JnysLupKoiurULRAZRzg1J/My-Cook-Concierge?node-id=2-235&t=iqOV8iVJABXznArT-1
 
 ER図
-https://gyazo.com/8c0b509ec3bb832e51f4b807f9707384
+https://gyazo.com/6f775af9d0e7ac9b67e91318c51d141f
