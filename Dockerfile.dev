@@ -1,0 +1,36 @@
+# Development Dockerfile for local Docker Compose usage.
+# Production builds should continue to use the root Dockerfile (Kamal).
+
+ARG RUBY_VERSION=3.3.0
+FROM docker.io/library/ruby:$RUBY_VERSION-slim
+
+WORKDIR /app
+
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+      build-essential \
+      curl \
+      git \
+      libpq-dev \
+      libvips \
+      libyaml-dev \
+      pkg-config \
+      postgresql-client && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+ENV RAILS_ENV=development \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_JOBS=4 \
+    BUNDLE_RETRY=3
+
+# Install gems first for better layer caching. The app code itself is bind-mounted.
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
+COPY entrypoint.sh /usr/bin/entrypoint.sh
+COPY bin/docker-dev /usr/bin/docker-dev
+RUN chmod +x /usr/bin/entrypoint.sh /usr/bin/docker-dev
+
+ENTRYPOINT ["entrypoint.sh"]
+EXPOSE 3000
+CMD ["bash", "bin/docker-dev"]

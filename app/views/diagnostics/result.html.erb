@@ -1,0 +1,44 @@
+<% content_for :title, "診断結果 | My Cook Concierge" %>
+
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 py-10">
+  <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+
+    <div class="text-center mb-8">
+      <p class="text-xs font-bold text-amber-600 tracking-wide mb-2">DIAGNOSIS COMPLETE</p>
+      <h1 class="text-2xl font-extrabold text-gray-950 tracking-tight mb-2">
+        診断が完了しました
+      </h1>
+      <p class="text-sm text-gray-500">
+        <%= @course_label %> · モック診断（<%= @answers.size %>問）
+      </p>
+    </div>
+
+    <div class="bg-amber-50 rounded-xl p-4 mb-6 border border-amber-100">
+      <p class="text-xs font-bold text-amber-800 mb-2">集まったタグ（モック）</p>
+      <div class="flex flex-wrap gap-2">
+        <% @collected_tags.each do |tag| %>
+          <span class="inline-block text-xs font-semibold text-amber-800 bg-white border border-amber-200 rounded-full px-3 py-1">
+            #<%= tag %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="space-y-3 mb-8">
+      <% @answers.each_with_index do |answer, index| %>
+        <div class="rounded-xl border border-gray-100 bg-gray-50/80 p-4">
+          <p class="text-xs text-gray-400 mb-1">Q<%= index + 1 %></p>
+          <p class="text-sm font-bold text-gray-900"><%= answer["choice_label"] %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <p class="text-xs text-center text-gray-400 mb-6">
+      ※ レシピ提案は次のイシューで実装予定です
+    </p>
+
+    <%= link_to "トップに戻る",
+          root_path,
+          class: "block w-full py-4 px-6 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-all text-base text-center" %>
+  </div>
+</div>
