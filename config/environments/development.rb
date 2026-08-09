@@ -11,7 +11,7 @@ Rails.application.configure do
 
   # Show full error reports.
   # カスタム404/500ページの動作確認時は false に設定してください。
-  config.consider_all_requests_local = false
+  config.consider_all_requests_local = true
 
   # Enable server timing.
   config.server_timing = true
