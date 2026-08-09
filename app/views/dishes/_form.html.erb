@@ -1,0 +1,70 @@
+<%= form_with(model: dish, class: "space-y-5") do |form| %>
+  <%= render "shared/error_messages", object: dish %>
+
+  <div>
+    <%= form.label :name, class: "block text-sm font-bold text-gray-800 mb-2" %>
+    <%= form.text_field :name,
+          class: "w-full rounded-xl border bg-white px-4 py-3 text-gray-900 focus:ring-2 outline-none transition #{dish.errors[:name].any? ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-amber-100 focus:border-amber-400 focus:ring-amber-200'}",
+          placeholder: "例: 春野菜の彩りパスタ" %>
+    <% if dish.errors[:name].any? %>
+      <p class="mt-2 text-xs font-semibold text-red-600"><%= dish.errors.full_messages_for(:name).first %></p>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :category, class: "block text-sm font-bold text-gray-800 mb-2" %>
+    <%= form.select :category,
+          Dish::CATEGORY_LABELS.map { |key, label| [label, key] },
+          { prompt: "カテゴリを選択してください" },
+          class: "w-full rounded-xl border bg-white px-4 py-3 text-gray-900 focus:ring-2 outline-none transition #{dish.errors[:category].any? ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-amber-100 focus:border-amber-400 focus:ring-amber-200'}" %>
+    <% if dish.errors[:category].any? %>
+      <p class="mt-2 text-xs font-semibold text-red-600"><%= dish.errors.full_messages_for(:category).first %></p>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :description, class: "block text-sm font-bold text-gray-800 mb-2" %>
+    <%= form.text_area :description, rows: 4,
+          class: "w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition",
+          placeholder: "料理の説明を入力" %>
+  </div>
+
+  <div>
+    <%= form.label :image_url, class: "block text-sm font-bold text-gray-800 mb-2" %>
+    <%= form.url_field :image_url,
+          class: "w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition",
+          placeholder: "https://example.com/image.jpg" %>
+  </div>
+
+  <div>
+    <%= form.label :recipe_url, class: "block text-sm font-bold text-gray-800 mb-2" %>
+    <%= form.url_field :recipe_url,
+          class: "w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition",
+          placeholder: "https://example.com/recipe" %>
+  </div>
+
+  <div>
+    <p class="block text-sm font-bold text-gray-800 mb-3">タグを選択</p>
+  <% if Tag.any? %>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 rounded-xl border border-amber-100 bg-amber-50/30 p-4">
+      <%= form.collection_check_boxes :tag_ids, Tag.order(:name), :id, :name do |b| %>
+        <label class="flex items-center gap-2 rounded-lg border border-amber-100 bg-white px-3 py-2.5 cursor-pointer hover:border-amber-300 hover:bg-amber-50/50 transition has-[:checked]:border-amber-400 has-[:checked]:bg-amber-50 has-[:checked]:ring-2 has-[:checked]:ring-amber-200">
+          <%= b.check_box(class: "rounded border-amber-300 text-amber-500 focus:ring-amber-400") %>
+          <span class="text-sm font-medium text-gray-800"><%= b.text %></span>
+        </label>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-sm text-gray-500 rounded-xl border border-dashed border-amber-200 bg-amber-50/20 px-4 py-3">
+      登録されているタグがありません。
+      <%= link_to "タグを追加する", new_tag_path, class: "text-amber-700 font-bold hover:text-amber-900" %>
+    </p>
+  <% end %>
+  </div>
+
+  <div class="flex flex-col sm:flex-row gap-3 pt-2">
+    <%= form.submit class: "w-full sm:w-auto py-3 px-8 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-all cursor-pointer border-0" %>
+    <%= link_to "キャンセル", dishes_path,
+          class: "w-full sm:w-auto py-3 px-8 bg-white hover:bg-amber-50 text-amber-800 font-bold rounded-xl border-2 border-amber-200 transition-all text-center" %>
+  </div>
+<% end %>

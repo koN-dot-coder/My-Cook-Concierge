@@ -26,9 +26,9 @@
       </p>
 
       <%= form_with url: diagnostics_start_path, method: :post, local: true do %>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 [&_form]:w-full">
           <%= button_tag type: "submit", name: "question_count", value: "10",
-                class: "group text-left sm:text-center bg-white rounded-2xl shadow-sm border border-amber-100/80 p-6 sm:p-8 hover:-translate-y-0.5 hover:shadow-md hover:border-amber-300 transition-all cursor-pointer" do %>
+                class: "group w-full text-left sm:text-center bg-white rounded-2xl shadow-sm border border-amber-100/80 p-6 sm:p-8 hover:-translate-y-0.5 hover:shadow-md hover:border-amber-300 transition-all cursor-pointer" do %>
             <div class="flex sm:flex-col items-center gap-4 sm:gap-0">
               <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-800 flex items-center justify-center shrink-0 sm:mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
@@ -44,7 +44,7 @@
           <% end %>
 
           <%= button_tag type: "submit", name: "question_count", value: "20",
-                class: "group text-left sm:text-center bg-white rounded-2xl shadow-sm border border-amber-100/80 p-6 sm:p-8 hover:-translate-y-0.5 hover:shadow-md hover:border-amber-300 transition-all cursor-pointer" do %>
+                class: "group w-full text-left sm:text-center bg-white rounded-2xl shadow-sm border border-amber-100/80 p-6 sm:p-8 hover:-translate-y-0.5 hover:shadow-md hover:border-amber-300 transition-all cursor-pointer" do %>
             <div class="flex sm:flex-col items-center gap-4 sm:gap-0">
               <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-800 flex items-center justify-center shrink-0 sm:mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
@@ -61,7 +61,7 @@
           <% end %>
 
           <%= button_tag type: "submit", name: "question_count", value: "30",
-                class: "group text-left sm:text-center bg-white rounded-2xl shadow-sm border border-amber-100/80 p-6 sm:p-8 hover:-translate-y-0.5 hover:shadow-md hover:border-amber-300 transition-all cursor-pointer" do %>
+                class: "group w-full text-left sm:text-center bg-white rounded-2xl shadow-sm border border-amber-100/80 p-6 sm:p-8 hover:-translate-y-0.5 hover:shadow-md hover:border-amber-300 transition-all cursor-pointer" do %>
             <div class="flex sm:flex-col items-center gap-4 sm:gap-0">
               <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-800 flex items-center justify-center shrink-0 sm:mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">

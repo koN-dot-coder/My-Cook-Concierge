@@ -6,39 +6,53 @@
     <div class="text-center mb-8">
       <p class="text-xs font-bold text-amber-600 tracking-wide mb-2">DIAGNOSIS COMPLETE</p>
       <h1 class="text-2xl font-extrabold text-gray-950 tracking-tight mb-2">
-        診断が完了しました
+        あなたへのおすすめ
       </h1>
       <p class="text-sm text-gray-500">
-        <%= @course_label %> · モック診断（<%= @answers.size %>問）
+        <%= @course_label %> · <%= @answers.size %>問の診断結果
       </p>
     </div>
 
-    <div class="bg-amber-50 rounded-xl p-4 mb-6 border border-amber-100">
-      <p class="text-xs font-bold text-amber-800 mb-2">集まったタグ（モック）</p>
+    <% if @dish %>
+      <div class="rounded-2xl border-2 border-amber-200 bg-amber-50/40 p-6 mb-6 text-center">
+        <p class="text-xs font-bold text-amber-700 mb-2">TODAY'S PICK</p>
+        <h2 class="text-2xl font-extrabold text-gray-950 tracking-tight mb-3">
+          <%= @dish.name %>
+        </h2>
+        <% if @dish.description.present? %>
+          <p class="text-sm text-gray-600 leading-relaxed">
+            <%= @dish.description %>
+          </p>
+        <% end %>
+        <p class="inline-block mt-4 text-xs font-semibold text-amber-800 bg-white border border-amber-200 rounded-full px-3 py-1">
+          <%= @dish.category_label %>
+        </p>
+      </div>
+    <% else %>
+      <div class="rounded-2xl border border-gray-200 bg-gray-50 p-6 mb-6 text-center">
+        <p class="text-sm text-gray-600">該当する料理が見つかりませんでした。</p>
+      </div>
+    <% end %>
+
+    <div class="bg-white rounded-xl p-4 mb-8 border border-gray-100">
+      <p class="text-xs font-bold text-gray-500 mb-2">マッチしたタグ</p>
       <div class="flex flex-wrap gap-2">
         <% @collected_tags.each do |tag| %>
-          <span class="inline-block text-xs font-semibold text-amber-800 bg-white border border-amber-200 rounded-full px-3 py-1">
+          <span class="inline-block text-xs font-semibold text-amber-800 bg-amber-50 border border-amber-100 rounded-full px-3 py-1">
             #<%= tag %>
           </span>
         <% end %>
       </div>
     </div>
 
-    <div class="space-y-3 mb-8">
-      <% @answers.each_with_index do |answer, index| %>
-        <div class="rounded-xl border border-gray-100 bg-gray-50/80 p-4">
-          <p class="text-xs text-gray-400 mb-1">Q<%= index + 1 %></p>
-          <p class="text-sm font-bold text-gray-900"><%= answer["choice_label"] %></p>
-        </div>
-      <% end %>
+    <div class="space-y-3">
+      <%= link_to "過去の診断履歴を見る",
+            diagnostic_histories_path,
+            class: "block w-full py-4 px-6 bg-white hover:bg-amber-50 text-amber-800 font-bold rounded-xl border-2 border-amber-200 transition-all text-base text-center" %>
+
+      <%= link_to "トップに戻ってやり直す",
+            root_path,
+            class: "block w-full py-4 px-6 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-all text-base text-center" %>
     </div>
-
-    <p class="text-xs text-center text-gray-400 mb-6">
-      ※ レシピ提案は次のイシューで実装予定です
-    </p>
-
-    <%= link_to "トップに戻る",
-          root_path,
-          class: "block w-full py-4 px-6 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-all text-base text-center" %>
   </div>
 </div>

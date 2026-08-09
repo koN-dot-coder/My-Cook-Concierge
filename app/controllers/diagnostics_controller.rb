@@ -75,6 +75,7 @@ class DiagnosticsController < ApplicationController
     session[:question_count] = count
     session[:current_question_index] = 0
     session[:answers] = []
+    session.delete(:history_saved)
 
     redirect_to diagnostics_question_path
   end
@@ -141,5 +142,41 @@ class DiagnosticsController < ApplicationController
     @answers = session[:answers]
     @course_label = COURSE_LABELS[session[:question_count]] || "診断コース"
     @collected_tags = @answers.flat_map { |answer| answer["tags"] }.uniq
+    @dish = Dish.match_by_tag_names(@collected_tags)
+    save_history_if_needed
+  end
+
+  def history_index
+    @histories = History.includes(:dish).order(created_at: :desc).page(params[:page]).per(10)
+  end
+
+  def history_show
+    @history = History.includes(:dish).find(params[:id])
+    @dish = @history.dish
+  rescue ActiveRecord::RecordNotFound
+    redirect_to diagnostic_histories_path, alert: "履歴が見つかりませんでした"
+  end
+
+  def history_destroy
+    history = History.find(params[:id])
+    history.destroy!
+    redirect_to diagnostic_histories_path, notice: "履歴を削除しました"
+  rescue ActiveRecord::RecordNotFound
+    redirect_to diagnostic_histories_path, alert: "履歴が見つかりませんでした"
+  end
+
+  def history_clear
+    History.destroy_all
+    redirect_to diagnostic_histories_path, notice: "すべての履歴をクリアしました"
+  end
+
+  private
+
+  def save_history_if_needed
+    return unless @dish
+    return if session[:history_saved]
+
+    History.create!(dish: @dish)
+    session[:history_saved] = true
   end
 end

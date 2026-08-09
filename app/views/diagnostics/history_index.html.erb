@@ -1,0 +1,64 @@
+<% content_for :title, "診断履歴 | My Cook Concierge" %>
+
+<div class="min-h-screen bg-[#FFF9F0] px-4 py-10">
+  <div class="max-w-2xl mx-auto">
+    <div class="mb-8">
+      <%= link_to "← トップに戻る", root_path, class: "text-sm text-amber-800/70 hover:text-amber-900 transition-colors" %>
+      <h1 class="text-2xl font-extrabold text-amber-950 tracking-tight mt-4">過去の診断履歴</h1>
+      <p class="text-sm text-amber-900/60 mt-2">これまでの診断結果を確認できます</p>
+    </div>
+
+    <% if @histories.any? %>
+      <div class="mb-6">
+        <%= button_to "すべての履歴をクリアする",
+              clear_diagnostic_histories_path,
+              method: :delete,
+              form: { class: "inline-block w-full" },
+              class: "w-full py-3 px-6 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl shadow-sm transition-all text-sm",
+              data: { turbo_confirm: "すべての履歴を削除します。よろしいですか？" } %>
+      </div>
+
+      <div class="space-y-3">
+        <% @histories.each do |history| %>
+          <div class="flex items-stretch gap-2">
+            <%= link_to diagnostic_history_path(history),
+                  class: "flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-amber-100/80 p-5 hover:border-amber-300 hover:shadow-md transition-all" do %>
+              <div class="flex items-center justify-between gap-4">
+                <div class="min-w-0">
+                  <p class="text-xs text-amber-700/70 mb-1">
+                    <%= l(history.created_at, format: :long) %>
+                  </p>
+                  <h2 class="text-lg font-bold text-gray-900 truncate">
+                    <%= history.dish.name %>
+                  </h2>
+                  <p class="text-xs text-amber-800 mt-1">
+                    <%= history.dish.category_label %>
+                  </p>
+                </div>
+                <span class="text-amber-500 shrink-0">→</span>
+              </div>
+            <% end %>
+
+            <%= button_to diagnostic_history_path(history),
+                  method: :delete,
+                  form: { class: "shrink-0" },
+                  class: "h-full px-4 bg-white hover:bg-red-50 text-red-500 hover:text-red-600 font-bold rounded-2xl border border-amber-100/80 hover:border-red-200 transition-all text-sm",
+                  data: { turbo_confirm: "本当に削除しますか？" },
+                  title: "削除" do %>
+              <span aria-hidden="true">🗑️</span>
+              <span class="sr-only">削除</span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <%= paginate @histories %>
+    <% else %>
+      <div class="bg-white rounded-2xl shadow-sm border border-amber-100/80 p-10 text-center">
+        <p class="text-gray-600 mb-6">まだ診断履歴がありません</p>
+        <%= link_to "診断をはじめる", root_path,
+              class: "inline-block py-3 px-6 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-all" %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+ja:
+  time:
+    formats:
+      long: "%Y年%m月%d日 %H:%M"
+  activerecord:
+    models:
+      dish: 料理
+      tag: タグ
+    attributes:
+      dish:
+        name: 料理名
+        category: カテゴリ
+        description: 説明
+        image_url: 画像URL
+        recipe_url: レシピURL
+      tag:
+        name: タグ名
+    errors:
+      messages:
+        blank: を入力してください
+        taken: はすでに存在します
+        record_invalid: "バリデーションに失敗しました: %{errors}"
+        restrict_dependent_destroy:
+          has_many: "%{record}が存在しているので削除できません"
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: を入力してください
+      taken: はすでに存在します

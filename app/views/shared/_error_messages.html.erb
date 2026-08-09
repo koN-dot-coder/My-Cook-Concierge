@@ -1,0 +1,17 @@
+<% if object.errors.any? %>
+  <div class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 shadow-sm" role="alert">
+  <div class="flex items-start gap-3">
+    <span class="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white" aria-hidden="true">!</span>
+    <div class="flex-1">
+      <p class="font-bold mb-2">
+        <%= object.errors.count %>件のエラーがあります。入力内容をご確認ください。
+      </p>
+      <ul class="list-disc list-inside space-y-1 marker:text-red-400">
+        <% object.errors.full_messages.each do |message| %>
+          <li class="font-medium"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  </div>
+<% end %>
