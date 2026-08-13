@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
-  # アプリのトップページ（http://localhost:3000）へのアクセスを、今作った画面に設定します
+  resource :session
+  get "logout/complete", to: "sessions#complete", as: :session_complete
+  resource :registration, only: %i[new create], controller: "registrations"
+  resources :passwords, param: :token
+
   root "diagnostics#top"
 
-  # 診断画面用のアドレス定義
   get "diagnostics/top", to: "diagnostics#top"
   post "diagnostics/start", to: "diagnostics#start"
   get "diagnostics/question", to: "diagnostics#question"
@@ -16,6 +19,14 @@ Rails.application.routes.draw do
   resources :dishes
   resources :tags
 
-  # ヘルスチェック用のデフォルト設定（Rails 8で自動追加されたもの）
+  get "terms", to: "pages#terms"
+  get "privacy", to: "pages#privacy"
+
+  get "favorites", to: "favorites#index", as: :favorites
+  post "favorites/:dish_id", to: "favorites#create", as: :favorite_dish
+  delete "favorites/:dish_id", to: "favorites#destroy"
+
+  resource :account, only: %i[edit update]
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

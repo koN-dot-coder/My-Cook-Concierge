@@ -1,7 +1,9 @@
 <% content_for :title, "診断履歴 | My Cook Concierge" %>
 
-<div class="min-h-screen bg-[#FFF9F0] px-4 py-10">
-  <div class="max-w-2xl mx-auto">
+<div class="min-h-screen bg-[#FFF9F0] flex flex-col">
+  <%= render "layouts/site_header" %>
+
+  <div class="flex-1 max-w-2xl mx-auto w-full px-4 py-10">
     <div class="mb-8">
       <%= link_to "← トップに戻る", root_path, class: "text-sm text-amber-800/70 hover:text-amber-900 transition-colors" %>
       <h1 class="text-2xl font-extrabold text-amber-950 tracking-tight mt-4">過去の診断履歴</h1>
@@ -31,6 +33,11 @@
                   <h2 class="text-lg font-bold text-gray-900 truncate">
                     <%= history.dish.name %>
                   </h2>
+                  <% if history.course_label.present? %>
+                    <p class="text-xs text-amber-700/70 mt-1">
+                      <%= history.course_label %>
+                    </p>
+                  <% end %>
                   <p class="text-xs text-amber-800 mt-1">
                     <%= history.dish.category_label %>
                   </p>
@@ -61,4 +68,6 @@
       </div>
     <% end %>
   </div>
+
+  <%= render "layouts/site_footer" %>
 </div>

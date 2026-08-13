@@ -1,0 +1,23 @@
+<%# locals: (dish:, favorite_dish_ids:) %>
+<% if authenticated? %>
+  <% if favorite_dish_ids.include?(dish.id) %>
+    <%= button_to favorite_dish_path(dish),
+          method: :delete,
+          form: { class: "inline-block" },
+          class: "inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-full px-3 py-1.5 transition cursor-pointer" do %>
+      <span aria-hidden="true">★</span> お気に入り済み
+    <% end %>
+  <% else %>
+    <%= button_to favorite_dish_path(dish),
+          method: :post,
+          form: { class: "inline-block" },
+          class: "inline-flex items-center gap-1.5 text-xs font-bold text-white bg-amber-500 hover:bg-amber-600 rounded-full px-3 py-1.5 shadow-sm transition cursor-pointer border-0" do %>
+      <span aria-hidden="true">☆</span> お気に入りに追加
+    <% end %>
+  <% end %>
+<% else %>
+  <%= link_to new_session_path,
+        class: "inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-white hover:bg-amber-50 border border-amber-200 rounded-full px-3 py-1.5 transition" do %>
+    <span aria-hidden="true">☆</span> ログインして保存
+  <% end %>
+<% end %>

@@ -1,0 +1,100 @@
+<% content_for :title, "新規登録 | My Cook Concierge" %>
+
+<div class="min-h-screen bg-[#FFF9F0] flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-amber-100/80 p-8 sm:p-10">
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-extrabold text-amber-900 tracking-tight">My Cook Concierge</h1>
+      <p class="text-sm text-amber-900/60 mt-2">あなたにぴったりの料理を提案します。</p>
+    </div>
+
+    <%= render "shared/error_messages", object: @user %>
+
+    <%= form_with model: @user, url: registration_path, class: "space-y-4" do |form| %>
+      <div>
+        <%= form.label :name, "お名前", class: "block text-sm font-bold text-gray-800 mb-2" %>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" aria-hidden="true">👤</span>
+          <%= form.text_field :name,
+                autofocus: true,
+                placeholder: "山田 太郎",
+                class: "w-full rounded-xl border border-amber-100 bg-white pl-11 pr-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition #{@user.errors[:name].any? ? 'border-red-300' : ''}" %>
+        </div>
+        <% if @user.errors[:name].any? %>
+          <p class="mt-1.5 text-xs font-semibold text-red-600"><%= @user.errors.full_messages_for(:name).first %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.label :email_address, "メールアドレス", class: "block text-sm font-bold text-gray-800 mb-2" %>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" aria-hidden="true">✉</span>
+          <%= form.email_field :email_address,
+                autocomplete: "username",
+                placeholder: "example@email.com",
+                class: "w-full rounded-xl border border-amber-100 bg-white pl-11 pr-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition #{@user.errors[:email_address].any? ? 'border-red-300' : ''}" %>
+        </div>
+        <% if @user.errors[:email_address].any? %>
+          <p class="mt-1.5 text-xs font-semibold text-red-600"><%= @user.errors.full_messages_for(:email_address).first %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.label :password, "パスワード", class: "block text-sm font-bold text-gray-800 mb-2" %>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" aria-hidden="true">🔒</span>
+          <%= form.password_field :password,
+                autocomplete: "new-password",
+                maxlength: 72,
+                placeholder: "8文字以上の半角英数字",
+                class: "w-full rounded-xl border border-amber-100 bg-white pl-11 pr-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition #{@user.errors[:password].any? ? 'border-red-300' : ''}" %>
+        </div>
+        <% if @user.errors[:password].any? %>
+          <p class="mt-1.5 text-xs font-semibold text-red-600"><%= @user.errors.full_messages_for(:password).first %></p>
+        <% end %>
+      </div>
+
+      <div>
+        <%= form.label :password_confirmation, "パスワード（確認）", class: "block text-sm font-bold text-gray-800 mb-2" %>
+        <div class="relative">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" aria-hidden="true">↻</span>
+          <%= form.password_field :password_confirmation,
+                autocomplete: "new-password",
+                maxlength: 72,
+                placeholder: "もう一度入力してください",
+                class: "w-full rounded-xl border border-amber-100 bg-white pl-11 pr-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition" %>
+        </div>
+      </div>
+
+      <div class="space-y-3 rounded-xl border border-amber-100 bg-amber-50/30 p-4">
+        <label class="flex items-start gap-2 text-xs text-amber-900/70 cursor-pointer">
+          <input type="checkbox" name="terms_accepted" required class="mt-0.5 rounded border-amber-300 text-amber-500 focus:ring-amber-400">
+          <span>
+            <%= link_to "利用規約", terms_path, target: "_blank", rel: "noopener", class: "font-bold text-amber-700 hover:text-amber-900 underline underline-offset-2" %>
+            に同意します
+          </span>
+        </label>
+        <label class="flex items-start gap-2 text-xs text-amber-900/70 cursor-pointer">
+          <input type="checkbox" name="privacy_accepted" required class="mt-0.5 rounded border-amber-300 text-amber-500 focus:ring-amber-400">
+          <span>
+            <%= link_to "プライバシーポリシー", privacy_path, target: "_blank", rel: "noopener", class: "font-bold text-amber-700 hover:text-amber-900 underline underline-offset-2" %>
+            に同意します
+          </span>
+        </label>
+      </div>
+
+      <%= form.submit "登録して始める →",
+            class: "w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition cursor-pointer border-0" %>
+    <% end %>
+
+    <p class="text-center text-sm text-amber-900/60 mt-8">
+      すでにアカウントをお持ちですか？
+      <%= link_to "ログイン", new_session_path,
+            class: "font-bold text-amber-700 hover:text-amber-900 transition" %>
+    </p>
+
+    <div class="text-center text-xs text-amber-900/45 mt-6 flex flex-col items-center gap-1">
+      <%= link_to "利用規約", terms_path, target: "_blank", rel: "noopener", class: "hover:text-amber-800 underline underline-offset-2" %>
+      <%= link_to "プライバシーポリシー", privacy_path, target: "_blank", rel: "noopener", class: "hover:text-amber-800 underline underline-offset-2" %>
+    </div>
+  </div>
+</div>

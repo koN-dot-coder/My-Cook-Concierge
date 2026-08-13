@@ -30,6 +30,22 @@ class DishTest < ActiveSupport::TestCase
     DishTag.create!(dish: other_dish, tag: quick_tag)
 
     result = Dish.match_by_tag_names([quick_tag.name, japanese_tag.name, other_tag.name])
-    assert_equal dish, result
+    assert_equal dish, result.first
+  end
+
+  test "recommendations_by_category returns dishes per category" do
+    Rails.application.load_seed if Dish.none?
+
+    recommendations = Dish.recommendations_by_category(%w[japanese umami quick])
+    assert recommendations[:main].any?
+    assert recommendations[:staple].any?
+    assert recommendations[:drink].any?
+  end
+
+  test "category labels include eight display categories" do
+    assert_equal 8, Dish::CATEGORY_DISPLAY_ORDER.size
+    assert_equal "デザート", Dish::CATEGORY_LABELS[:dessert]
+    assert_equal "お菓子", Dish::CATEGORY_LABELS[:sweet]
+    assert_equal "ドリンク", Dish::CATEGORY_LABELS[:drink]
   end
 end

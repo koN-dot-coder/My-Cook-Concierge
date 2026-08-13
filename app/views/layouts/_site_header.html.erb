@@ -1,0 +1,32 @@
+<header class="bg-white/95 border-b border-amber-100/80 backdrop-blur-sm sticky top-0 z-20">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <%= link_to root_path, class: "text-lg sm:text-xl font-bold tracking-tight text-amber-900 shrink-0" do %>
+      My Cook Concierge
+    <% end %>
+
+    <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-amber-900/70">
+      <%= link_to "ホーム", root_path, class: "hover:text-amber-900 transition-colors" %>
+      <%= link_to "診断履歴", diagnostic_histories_path, class: "hover:text-amber-900 transition-colors" %>
+      <%= link_to "お気に入り", favorites_path, class: "hover:text-amber-900 transition-colors" %>
+    </nav>
+
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <% if authenticated? %>
+        <%= link_to current_user.name,
+              edit_account_path,
+              class: "hidden sm:inline text-sm font-medium text-amber-800 max-w-[8rem] truncate hover:text-amber-950 transition-colors",
+              title: "アカウント設定" %>
+        <%= button_to "ログアウト",
+              session_path,
+              method: :delete,
+              form: { class: "inline-block" },
+              class: "text-xs sm:text-sm font-bold text-amber-800 hover:text-amber-950 px-3 py-2 rounded-lg hover:bg-amber-50 transition cursor-pointer border-0 bg-transparent" %>
+      <% else %>
+        <%= link_to "ログイン", new_session_path,
+              class: "text-xs sm:text-sm font-bold text-amber-800 hover:text-amber-950 px-3 py-2 rounded-lg hover:bg-amber-50 transition" %>
+        <%= link_to "新規登録", new_registration_path,
+              class: "text-xs sm:text-sm font-bold text-white bg-amber-500 hover:bg-amber-600 px-3 sm:px-4 py-2 rounded-xl shadow-sm transition" %>
+      <% end %>
+    </div>
+  </div>
+</header>

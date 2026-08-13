@@ -2,6 +2,7 @@ require "test_helper"
 
 class DishesControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @admin = users(:admin)
     @tag_one = Tag.create!(name: "和食タグ")
     @tag_two = Tag.create!(name: "簡単タグ")
 
@@ -15,25 +16,48 @@ class DishesControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
-  test "should get index" do
+  test "should get index without authentication" do
     get dishes_url
     assert_response :success
-    assert_match "管理テスト料理", response.body
+    assert_match "料理一覧", response.body
   end
 
-  test "should get show" do
+  test "should get show without authentication" do
     get dish_url(@dish)
     assert_response :success
     assert_match @dish.name, response.body
     assert_match @tag_one.name, response.body
   end
 
-  test "should get new" do
+  test "new requires admin" do
+    get new_dish_url
+    assert_redirected_to new_session_url
+
+    sign_in_as(@admin)
     get new_dish_url
     assert_response :success
   end
 
-  test "should create dish" do
+  test "non admin cannot create dish" do
+    sign_in_as(users(:one))
+
+    assert_no_difference("Dish.count") do
+      post dishes_url, params: {
+        dish: {
+          name: "新規料理",
+          description: "新規説明",
+          category: "soup",
+          tag_ids: [@tag_one.id]
+        }
+      }
+    end
+
+    assert_redirected_to root_path
+  end
+
+  test "admin should create dish" do
+    sign_in_as(@admin)
+
     assert_difference("Dish.count", 1) do
       post dishes_url, params: {
         dish: {
@@ -54,13 +78,16 @@ class DishesControllerTest < ActionDispatch::IntegrationTest
     assert_match "料理を登録しました", response.body
   end
 
-  test "should get edit" do
+  test "admin should get edit" do
+    sign_in_as(@admin)
     get edit_dish_url(@dish)
     assert_response :success
     assert_match @tag_one.name, response.body
   end
 
-  test "should update dish" do
+  test "admin should update dish" do
+    sign_in_as(@admin)
+
     patch dish_url(@dish), params: {
       dish: { name: "更新後の料理名", category: "dessert", tag_ids: [@tag_two.id] }
     }
@@ -72,7 +99,9 @@ class DishesControllerTest < ActionDispatch::IntegrationTest
     assert_equal [@tag_two.id], @dish.tag_ids
   end
 
-  test "should destroy dish" do
+  test "admin should destroy dish" do
+    sign_in_as(@admin)
+
     assert_difference("Dish.count", -1) do
       delete dish_url(@dish)
     end

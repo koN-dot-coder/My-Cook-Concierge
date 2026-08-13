@@ -1,0 +1,60 @@
+<% content_for :title, "プライバシーポリシー | My Cook Concierge" %>
+
+<div class="min-h-screen bg-[#FFF9F0] text-amber-950 flex flex-col">
+  <%= render "layouts/site_header" %>
+
+  <main class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-10 pb-16">
+    <%= render "pages/legal_nav", current: :privacy %>
+
+    <article class="bg-white rounded-3xl shadow-sm border border-amber-100/80 p-8 sm:p-10 prose prose-amber max-w-none">
+      <h1 class="text-2xl font-extrabold text-amber-950 mb-2">プライバシーポリシー</h1>
+      <p class="text-sm text-amber-900/50 mb-8">最終更新日: <%= Date.new(2026, 8, 13).strftime("%Y年%m月%d日") %></p>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-amber-900 mb-3">1. 収集する情報</h2>
+        <p class="text-sm text-gray-700 leading-relaxed mb-3">
+          当サービスでは、以下の情報を収集する場合があります。
+        </p>
+        <ul class="text-sm text-gray-700 leading-relaxed list-disc list-inside space-y-2">
+          <li>お名前、メールアドレスなどの登録情報</li>
+          <li>診断の回答内容やお気に入り・履歴などの利用データ</li>
+          <li>アクセスログ、Cookie、端末情報などの技術情報</li>
+        </ul>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-amber-900 mb-3">2. 利用目的</h2>
+        <ul class="text-sm text-gray-700 leading-relaxed list-disc list-inside space-y-2">
+          <li>ユーザー認証およびアカウント管理</li>
+          <li>料理提案・診断機能の提供</li>
+          <li>サービス改善およびお問い合わせ対応</li>
+          <li>不正利用の防止</li>
+        </ul>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-amber-900 mb-3">3. 第三者提供</h2>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          法令に基づく場合を除き、本人の同意なく個人情報を第三者に提供することはありません。
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-amber-900 mb-3">4. 安全管理</h2>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          当サービスは、個人情報の漏えい・滅失・毀損を防止するため、適切なセキュリティ対策を講じます。
+          パスワードは暗号化して保存します。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-amber-900 mb-3">5. お問い合わせ</h2>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          本ポリシーに関するお問い合わせは、当サービス内のお問い合わせ窓口よりご連絡ください。
+        </p>
+      </section>
+    </article>
+  </main>
+
+  <%= render "layouts/site_footer" %>
+</div>

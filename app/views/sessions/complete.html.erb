@@ -1,0 +1,26 @@
+<% content_for :title, "ログアウト完了 | My Cook Concierge" %>
+
+<div class="min-h-screen bg-[#FFF9F0] flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-md bg-white rounded-3xl shadow-xl border border-amber-100/80 p-10 text-center">
+    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-4xl" aria-hidden="true">
+      🍲
+    </div>
+
+    <h1 class="text-2xl font-extrabold text-amber-950 mb-4">ご利用ありがとうございました</h1>
+    <p class="text-sm text-amber-900/65 leading-relaxed mb-8">
+      My Cook Conciergeをご利用いただき感謝申し上げます。<br>
+      またのお越しを心よりお待ちしております。
+    </p>
+
+    <%= link_to root_path,
+          class: "inline-flex items-center justify-center gap-2 w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition" do %>
+      <span aria-hidden="true">🏠</span>
+      ホームに戻る
+    <% end %>
+
+    <p class="mt-6">
+      <%= link_to "再ログイン", new_session_path,
+            class: "text-sm font-bold text-amber-700 hover:text-amber-900 transition" %>
+    </p>
+  </div>
+</div>

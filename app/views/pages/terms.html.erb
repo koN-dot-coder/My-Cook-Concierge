@@ -1,0 +1,58 @@
+<% content_for :title, "利用規約 | My Cook Concierge" %>
+
+<div class="min-h-screen bg-[#FFF9F0] text-amber-950 flex flex-col">
+  <%= render "layouts/site_header" %>
+
+  <main class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-10 pb-16">
+    <%= render "pages/legal_nav", current: :terms %>
+
+    <article class="bg-white rounded-3xl shadow-sm border border-amber-100/80 p-8 sm:p-10 prose prose-amber max-w-none">
+      <h1 class="text-2xl font-extrabold text-amber-950 mb-2">利用規約</h1>
+      <p class="text-sm text-amber-900/50 mb-8">最終更新日: <%= Date.new(2026, 8, 13).strftime("%Y年%m月%d日") %></p>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-amber-900 mb-3">第1条（適用）</h2>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          本利用規約（以下「本規約」）は、My Cook Concierge（以下「当サービス」）の利用条件を定めるものです。
+          登録ユーザーの皆さまには、本規約に従って当サービスをご利用いただきます。
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-amber-900 mb-3">第2条（利用登録）</h2>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          利用登録の申請者が当サービスの定める方法によって利用登録を申請し、当サービスがこれを承認することによって、
+          利用登録が完了するものとします。虚偽の情報による登録は禁止します。
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-amber-900 mb-3">第3条（禁止事項）</h2>
+        <ul class="text-sm text-gray-700 leading-relaxed list-disc list-inside space-y-2">
+          <li>法令または公序良俗に違反する行為</li>
+          <li>当サービスの運営を妨害するおそれのある行為</li>
+          <li>他のユーザーまたは第三者の権利を侵害する行為</li>
+          <li>不正アクセスやシステムへの過度な負荷をかける行為</li>
+        </ul>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-amber-900 mb-3">第4条（免責事項）</h2>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          当サービスは、料理の提案やレシピ情報の正確性・安全性について保証するものではありません。
+          アレルギーや健康上の理由がある場合は、ご自身の責任において内容をご確認ください。
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-amber-900 mb-3">第5条（規約の変更）</h2>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          当サービスは、必要と判断した場合には、ユーザーに通知することなく本規約を変更できるものとします。
+          変更後の規約は、本ページに掲載した時点で効力を生じます。
+        </p>
+      </section>
+    </article>
+  </main>
+
+  <%= render "layouts/site_footer" %>
+</div>

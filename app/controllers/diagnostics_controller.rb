@@ -1,4 +1,5 @@
 class DiagnosticsController < ApplicationController
+  allow_unauthenticated_access only: %i[top start question answer result]
   ALLOWED_QUESTION_COUNTS = [10, 20, 30].freeze
 
   COURSE_LABELS = {
@@ -6,42 +7,6 @@ class DiagnosticsController < ApplicationController
     20 => "ふつうコース",
     30 => "じっくりコース"
   }.freeze
-
-  MOCK_QUESTIONS = [
-    {
-      id: "mood",
-      text: "今の気分に近いのはどれ？",
-      hint: "直感でいちばん近いものを選んでください",
-      choices: [
-        { key: "light", label: "あっさり軽め", description: "サラダや麺などさっぱり系", tags: %w[light fresh quick] },
-        { key: "hearty", label: "しっかり食べたい", description: "ご飯ものやガッツリ系", tags: %w[hearty rice] },
-        { key: "snack", label: "おつまみ・おやつ", description: "小腹を満たす一品", tags: %w[snack casual] },
-        { key: "hot", label: "あったかメニュー", description: "スープや煮込みなど", tags: %w[hot comfort] }
-      ]
-    },
-    {
-      id: "time",
-      text: "調理に使える時間は？",
-      hint: "今すぐ作れる目安で選んでください",
-      choices: [
-        { key: "under_10", label: "10分以内", description: "とにかく早く食べたい", tags: %w[quick easy] },
-        { key: "under_20", label: "20分くらい", description: "手早くでもちゃんと作りたい", tags: %w[moderate] },
-        { key: "under_40", label: "40分くらい", description: "じっくり作る余裕がある", tags: %w[slow cooking] },
-        { key: "no_cook", label: "火を使わない", description: "サラダや冷製メニュー中心", tags: %w[nocook fresh] }
-      ]
-    },
-    {
-      id: "genre",
-      text: "今食べたいジャンルは？",
-      hint: "いちばん惹かれるものを選んでください",
-      choices: [
-        { key: "japanese", label: "和食", description: "ごはん・お味噌汁・定食系", tags: %w[japanese] },
-        { key: "western", label: "洋食", description: "パスタ・サンドイッチなど", tags: %w[western] },
-        { key: "asian", label: "アジアン", description: "エスニック・スパイシー系", tags: %w[asian spicy] },
-        { key: "anything", label: "なんでもOK", description: "おすすめに任せたい", tags: %w[flexible] }
-      ]
-    }
-  ].freeze
 
   def top
     @featured_recipes = [
@@ -73,6 +38,7 @@ class DiagnosticsController < ApplicationController
     end
 
     session[:question_count] = count
+    session[:question_order] = DiagnosticQuestionBank.build_question_order(count)
     session[:current_question_index] = 0
     session[:answers] = []
     session.delete(:history_saved)
@@ -86,18 +52,19 @@ class DiagnosticsController < ApplicationController
       return
     end
 
+    question_order = session[:question_order] || []
     index = session[:current_question_index] || 0
 
-    if index >= MOCK_QUESTIONS.size
+    if index >= question_order.size
       redirect_to diagnostics_result_path
       return
     end
 
     @current_question_index = index
     @current_question = index + 1
-    @question_count = MOCK_QUESTIONS.size
+    @question_count = question_order.size
     @course_label = COURSE_LABELS[session[:question_count]] || "診断コース"
-    @question = MOCK_QUESTIONS[index]
+    @question = DiagnosticQuestionBank.find(question_order[index])
   end
 
   def answer
@@ -106,27 +73,33 @@ class DiagnosticsController < ApplicationController
       return
     end
 
+    question_order = session[:question_order] || []
     index = session[:current_question_index] || 0
-    question = MOCK_QUESTIONS[index]
-    choice = question&.dig(:choices)&.find { |item| item[:key] == params[:choice_key] }
 
-    unless choice
-      redirect_to diagnostics_question_path, alert: "選択肢が正しくありません"
-      return
+    if params[:skip].present?
+      session[:current_question_index] = index + 1
+    else
+      question = DiagnosticQuestionBank.find(question_order[index])
+      choice = question&.dig(:choices)&.find { |item| item[:key] == params[:choice_key] }
+
+      unless choice
+        redirect_to diagnostics_question_path, alert: "選択肢が正しくありません"
+        return
+      end
+
+      session[:answers] ||= []
+      session[:answers] << {
+        "question_index" => index,
+        "question_id" => question[:id],
+        "choice_key" => choice[:key],
+        "choice_label" => choice[:label],
+        "tags" => choice[:tags]
+      }
+
+      session[:current_question_index] = index + 1
     end
 
-    session[:answers] ||= []
-    session[:answers] << {
-      "question_index" => index,
-      "question_id" => question[:id],
-      "choice_key" => choice[:key],
-      "choice_label" => choice[:label],
-      "tags" => choice[:tags]
-    }
-
-    session[:current_question_index] = index + 1
-
-    if session[:current_question_index] >= MOCK_QUESTIONS.size
+    if session[:current_question_index] >= question_order.size
       redirect_to diagnostics_result_path
     else
       redirect_to diagnostics_question_path
@@ -139,26 +112,35 @@ class DiagnosticsController < ApplicationController
       return
     end
 
+    ensure_dish_catalog!
+
     @answers = session[:answers]
     @course_label = COURSE_LABELS[session[:question_count]] || "診断コース"
     @collected_tags = @answers.flat_map { |answer| answer["tags"] }.uniq
-    @dish = Dish.match_by_tag_names(@collected_tags)
+    @recommendations_by_category = Dish.recommendations_by_category(@collected_tags, limit_per_category: 3)
+    @dish = @recommendations_by_category[:main]&.first || Dish.match_by_tag_names(@collected_tags).first
+    @favorite_dish_ids = current_user&.favorites&.pluck(:dish_id) || []
     save_history_if_needed
   end
 
   def history_index
-    @histories = History.includes(:dish).order(created_at: :desc).page(params[:page]).per(10)
+    @histories = current_user.histories.includes(:dish).order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def history_show
-    @history = History.includes(:dish).find(params[:id])
+    @history = current_user.histories.includes(:dish).find(params[:id])
+    @diagnosed_at = @history.created_at
+    @course_label = @history.course_label.presence || "診断コース"
+    @collected_tags = Array(@history.collected_tags)
+    @recommendations_by_category = @history.recommendations_by_category
     @dish = @history.dish
+    @favorite_dish_ids = current_user&.favorites&.pluck(:dish_id) || []
   rescue ActiveRecord::RecordNotFound
     redirect_to diagnostic_histories_path, alert: "履歴が見つかりませんでした"
   end
 
   def history_destroy
-    history = History.find(params[:id])
+    history = current_user.histories.find(params[:id])
     history.destroy!
     redirect_to diagnostic_histories_path, notice: "履歴を削除しました"
   rescue ActiveRecord::RecordNotFound
@@ -166,17 +148,35 @@ class DiagnosticsController < ApplicationController
   end
 
   def history_clear
-    History.destroy_all
+    current_user.histories.destroy_all
     redirect_to diagnostic_histories_path, notice: "すべての履歴をクリアしました"
   end
 
   private
 
+  def ensure_dish_catalog!
+    return unless Dish.none?
+    return unless Rails.env.development?
+
+    Rails.application.load_seed
+  end
+
   def save_history_if_needed
     return unless @dish
+    return unless current_user
     return if session[:history_saved]
 
-    History.create!(dish: @dish)
+    recommendations_payload = @recommendations_by_category.transform_values do |dishes|
+      dishes.map(&:id)
+    end
+
+    current_user.histories.create!(
+      dish: @dish,
+      course_label: @course_label,
+      question_count: session[:question_count],
+      collected_tags: @collected_tags,
+      recommendations: recommendations_payload
+    )
     session[:history_saved] = true
   end
 end

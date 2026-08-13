@@ -1,0 +1,9 @@
+<div class="mb-6">
+  <%= link_to "← トップに戻る", root_path, class: "text-sm text-amber-800/70 hover:text-amber-900 transition-colors" %>
+  <div class="flex flex-wrap gap-3 mt-4">
+    <%= link_to "利用規約", terms_path,
+          class: "text-sm font-bold px-4 py-2 rounded-xl border transition #{current == :terms ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-amber-800 border-amber-200 hover:bg-amber-50'}" %>
+    <%= link_to "プライバシーポリシー", privacy_path,
+          class: "text-sm font-bold px-4 py-2 rounded-xl border transition #{current == :privacy ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-amber-800 border-amber-200 hover:bg-amber-50'}" %>
+  </div>
+</div>

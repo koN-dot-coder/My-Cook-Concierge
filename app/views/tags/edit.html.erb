@@ -5,7 +5,7 @@
     <div class="mb-6">
       <%= link_to "← 詳細に戻る", tag_path(@tag), class: "text-sm text-amber-800/70 hover:text-amber-900 transition-colors" %>
       <h1 class="text-2xl font-extrabold text-amber-950 tracking-tight mt-4">タグを編集</h1>
-      <p class="text-sm text-amber-900/60 mt-2"><%= @tag.name %></p>
+      <p class="text-sm text-amber-900/60 mt-2"><%= tag_label(@tag.name) %></p>
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm border border-amber-100/80 p-6 sm:p-8">

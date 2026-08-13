@@ -1,0 +1,64 @@
+<% content_for :title, "お気に入り | My Cook Concierge" %>
+
+<div class="min-h-screen bg-[#FFF9F0] flex flex-col">
+  <%= render "layouts/site_header" %>
+
+  <div class="flex-1 max-w-2xl mx-auto w-full px-4 py-10">
+    <div class="mb-8">
+      <%= link_to "← トップに戻る", root_path, class: "text-sm text-amber-800/70 hover:text-amber-900 transition-colors" %>
+      <h1 class="text-2xl font-extrabold text-amber-950 tracking-tight mt-4">お気に入り</h1>
+      <p class="text-sm text-amber-900/60 mt-2">気に入った料理を保存して、迷ったときに見返せます</p>
+    </div>
+
+    <% if @favorites.any? %>
+      <div class="space-y-3">
+        <% @favorites.each do |favorite| %>
+          <% dish = favorite.dish %>
+          <div class="flex items-stretch gap-2">
+            <div class="flex-1 min-w-0 bg-white rounded-2xl shadow-sm border border-amber-100/80 p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                  <p class="text-xs text-amber-700/70 mb-1">
+                    <%= l(favorite.created_at, format: :long) %>
+                  </p>
+                  <h2 class="text-lg font-bold text-gray-900 truncate">
+                    <%= dish.name %>
+                  </h2>
+                  <% if dish.description.present? %>
+                    <p class="text-sm text-gray-500 mt-1 line-clamp-2"><%= dish.description %></p>
+                  <% end %>
+                  <p class="text-xs text-amber-800 mt-2">
+                    <%= dish.category_label %>
+                  </p>
+                </div>
+                <span class="text-2xl shrink-0" aria-hidden="true">★</span>
+              </div>
+            </div>
+
+            <%= button_to favorite_dish_path(dish),
+                  method: :delete,
+                  form: { class: "shrink-0" },
+                  class: "h-full px-4 bg-white hover:bg-red-50 text-red-500 hover:text-red-600 font-bold rounded-2xl border border-amber-100/80 hover:border-red-200 transition-all text-sm",
+                  data: { turbo_confirm: "お気に入りから削除しますか？" },
+                  title: "削除" do %>
+              <span aria-hidden="true">🗑️</span>
+              <span class="sr-only">削除</span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <%= paginate @favorites %>
+    <% else %>
+      <div class="bg-white rounded-2xl shadow-sm border border-amber-100/80 p-10 text-center">
+        <p class="text-6xl mb-4" aria-hidden="true">☆</p>
+        <p class="text-gray-600 mb-2">まだお気に入りがありません</p>
+        <p class="text-sm text-gray-500 mb-6">診断結果から気に入った料理を保存しましょう</p>
+        <%= link_to "診断をはじめる", root_path,
+              class: "inline-block py-3 px-6 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-all" %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render "layouts/site_footer" %>
+</div>

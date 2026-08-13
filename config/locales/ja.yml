@@ -2,11 +2,83 @@ ja:
   time:
     formats:
       long: "%Y年%m月%d日 %H:%M"
+  tags:
+    light: あっさり
+    fresh: さっぱり
+    hearty: がっつり
+    comfort: ほっこり
+    indulgent: ご褒美
+    splurge: ちょい贅沢
+    quick: 時短
+    moderate: 普通
+    slow: じっくり
+    easy: かんたん
+    nocook: 火を使わない
+    cooking: しっかり料理
+    japanese: 和食
+    western: 洋食
+    asian: アジアン
+    flexible: なんでもOK
+    hot: 温かい
+    cold: 冷たい
+    solo: 一人飯
+    family: ファミリー
+    relaxed: リラックス
+    casual: カジュアル
+    rushed: 急ぎ
+    healthy: ヘルシー
+    rich: こってり
+    umami: うま味
+    sweet: 甘い
+    sour: 酸味
+    creamy: クリーム系
+    rice: ごはん
+    noodles: 麺
+    bread: パン
+    meat: お肉
+    seafood: 魚介
+    egg_tofu: 卵・豆腐
+    vegetable: 野菜
+    spicy: 辛い
+    mild: マイルド
+    grilled: 焼き物
+    simmered: 煮物
+    stir_fried: 炒め物
+    mixed: 混ぜるだけ
+    fried: 揚げ物
+    crispy: サクサク
+    smooth: とろとろ
+    chewy: もちもち
+    crunchy: シャキシャキ
+    familiar: 定番
+    adventurous: 新しい味
+    morning: 朝食
+    lunch: 昼食
+    dinner: 夕食
+    late_night: 夜食
+    snack: 軽食
+    drink_alcohol: お酒向け
+    drink_tea: お茶・コーヒー
+    drink_sweet: 甘い飲み物
+    drink_refreshing: さっぱり飲み物
+    leftovers: 余りもの活用
+    bento: お弁当向け
+    microwave: レンジ向け
+    photogenic: 映え
+    energy: エネルギー補給
+    reward: ごほうび
+    budget: 節約
   activerecord:
     models:
       dish: 料理
       tag: タグ
+      user: ユーザー
     attributes:
+      user:
+        name: お名前
+        email_address: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
       dish:
         name: 料理名
         category: カテゴリ
@@ -19,6 +91,7 @@ ja:
       messages:
         blank: を入力してください
         taken: はすでに存在します
+        too_short: は%{count}文字以上で入力してください
         record_invalid: "バリデーションに失敗しました: %{errors}"
         restrict_dependent_destroy:
           has_many: "%{record}が存在しているので削除できません"
