@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   resource :session
   get "logout/complete", to: "sessions#complete", as: :session_complete
   resource :registration, only: %i[new create], controller: "registrations"
-  resources :passwords, param: :token
 
   root "diagnostics#top"
 
@@ -26,7 +25,7 @@ Rails.application.routes.draw do
   post "favorites/:dish_id", to: "favorites#create", as: :favorite_dish
   delete "favorites/:dish_id", to: "favorites#destroy"
 
-  resource :account, only: %i[edit update]
+  resource :account, only: %i[edit update destroy]
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

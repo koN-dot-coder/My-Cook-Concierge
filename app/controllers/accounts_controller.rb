@@ -13,6 +13,13 @@ class AccountsController < ApplicationController
     end
   end
 
+  def destroy
+    user = current_user
+    terminate_session
+    user.destroy!
+    redirect_to root_path, notice: "アカウントを削除しました"
+  end
+
   private
 
   def account_params

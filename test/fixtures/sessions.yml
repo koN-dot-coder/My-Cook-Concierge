@@ -1,0 +1,1 @@
+# Empty fixture file so the sessions table is truncated on each test run.

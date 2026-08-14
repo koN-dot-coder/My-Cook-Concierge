@@ -55,4 +55,28 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_match "アカウント設定", response.body
   end
+
+  test "destroy requires authentication" do
+    delete session_url
+    follow_redirect!
+
+    delete account_url
+    assert_redirected_to new_session_url
+  end
+
+  test "destroy deletes user and related data" do
+    dish = Dish.create!(name: "退会テスト料理", category: :main)
+    @user.favorites.create!(dish: dish)
+    @user.histories.create!(dish: dish, course_label: "かんたんコース")
+    user_id = @user.id
+
+    delete account_url
+
+    assert_redirected_to root_url
+    assert_not User.exists?(user_id)
+    assert_equal 0, Favorite.where(user_id: user_id).count
+    assert_equal 0, History.where(user_id: user_id).count
+    follow_redirect!
+    assert_match "アカウントを削除しました", response.body
+  end
 end
