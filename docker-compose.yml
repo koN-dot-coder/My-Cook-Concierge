@@ -33,6 +33,8 @@ services:
     environment:
       RAILS_ENV: development
       DATABASE_URL: postgresql://postgres:password@db:5432/my_cook_concierge_development
+      DEV_ADMIN_EMAIL: ${DEV_ADMIN_EMAIL}
+      DEV_ADMIN_PASSWORD: ${DEV_ADMIN_PASSWORD}
       # Explicitly clear production bundle flags from any leftover image env.
       BUNDLE_DEPLOYMENT: "0"
       BUNDLE_WITHOUT: ""

@@ -102,18 +102,28 @@ end
 puts "Seeded #{Dish.count} dishes, #{Tag.count} tags, #{DishTag.count} dish_tags."
 
 if Rails.env.development?
-  admin = User.find_or_initialize_by(email_address: "admin@example.com")
+  admin_email = ENV["DEV_ADMIN_EMAIL"]
+  admin_password = ENV["DEV_ADMIN_PASSWORD"]
+
+  if admin_email.blank? || admin_password.blank?
+    raise <<~MSG.squish
+      開発用管理者アカウントには DEV_ADMIN_EMAIL と DEV_ADMIN_PASSWORD が必要です。
+      プロジェクト直下の .env に設定してください（.env.example を参照）。
+    MSG
+  end
+
+  admin = User.find_or_initialize_by(email_address: admin_email)
   if admin.new_record?
     admin.assign_attributes(
       name: "管理者",
-      password: "password123",
-      password_confirmation: "password123",
+      password: admin_password,
+      password_confirmation: admin_password,
       admin: true
     )
     admin.save!
-    puts "Created admin user: admin@example.com / password123"
+    puts "Created admin user: #{admin_email}"
   elsif !admin.admin?
     admin.update!(admin: true)
-    puts "Promoted existing admin@example.com to admin"
+    puts "Promoted existing #{admin_email} to admin"
   end
 end
