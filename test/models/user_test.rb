@@ -36,6 +36,18 @@ class UserTest < ActiveSupport::TestCase
     assert_includes user.errors[:password], "は8文字以上で入力してください"
   end
 
+  test "rejects mismatched password confirmation" do
+    user = User.new(
+      name: "テストユーザー",
+      email_address: "test@example.com",
+      password: "password123",
+      password_confirmation: "different123"
+    )
+
+    assert_not user.valid?
+    assert_includes user.errors[:password_confirmation], "と一致しません"
+  end
+
   test "normalizes email address" do
     user = User.create!(
       name: "テストユーザー",

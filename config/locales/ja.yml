@@ -93,6 +93,7 @@ ja:
         taken: はすでに存在します
         too_short: は%{count}文字以上で入力してください
         invalid: の形式が正しくありません
+        confirmation: と一致しません
         record_invalid: "バリデーションに失敗しました: %{errors}"
         restrict_dependent_destroy:
           has_many: "%{record}が存在しているので削除できません"
@@ -102,3 +103,4 @@ ja:
       blank: を入力してください
       taken: はすでに存在します
       invalid: の形式が正しくありません
+      confirmation: と一致しません

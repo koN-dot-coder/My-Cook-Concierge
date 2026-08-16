@@ -70,6 +70,24 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 30, session[:question_order].size
   end
 
+  test "twenty question course completes diagnosis with compact session answers" do
+    complete_diagnosis(question_count: 20)
+
+    assert_response :success
+    assert_match "本日の専用メニュー", response.body
+    assert_equal 20, session[:answers].size
+    session[:answers].each do |answer|
+      assert_equal %w[c q], answer.keys.sort
+    end
+  end
+
+  test "thirty question course completes diagnosis" do
+    complete_diagnosis(question_count: 30)
+
+    assert_response :success
+    assert_equal 30, session[:answers].size
+  end
+
   test "result does not duplicate history on refresh" do
     complete_diagnosis
 

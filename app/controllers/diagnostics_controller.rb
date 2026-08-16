@@ -86,11 +86,8 @@ class DiagnosticsController < ApplicationController
 
     session[:answers] ||= []
     session[:answers] << {
-      "question_index" => index,
-      "question_id" => question[:id],
-      "choice_key" => choice[:key],
-      "choice_label" => choice[:label],
-      "tags" => choice[:tags]
+      "q" => question[:id],
+      "c" => choice[:key]
     }
 
     session[:current_question_index] = index + 1
@@ -110,9 +107,8 @@ class DiagnosticsController < ApplicationController
 
     ensure_dish_catalog!
 
-    @answers = session[:answers]
     @course_label = COURSE_LABELS[session[:question_count]] || "診断コース"
-    @collected_tags = @answers.flat_map { |answer| answer["tags"] }.uniq
+    @collected_tags = DiagnosticQuestionBank.collected_tags_from_answers(session[:answers])
     @recommendations_by_category = Dish.recommendations_by_category(@collected_tags, limit_per_category: 3)
     @dish = @recommendations_by_category[:main]&.first || Dish.match_by_tag_names(@collected_tags).first
     @favorite_dish_ids = current_user&.favorites&.pluck(:dish_id) || []

@@ -396,5 +396,23 @@ class DiagnosticQuestionBank
     def build_question_order(count)
       questions_for_count(count).map { |question| question[:id] }
     end
+
+    def choice_tags(question_id, choice_key)
+      question = find(question_id)
+      return [] unless question
+
+      choice = question[:choices].find { |item| item[:key] == choice_key }
+      choice ? choice[:tags] : []
+    end
+
+    def collected_tags_from_answers(answers)
+      Array(answers).flat_map { |answer| tags_for_answer(answer) }.uniq
+    end
+
+    def tags_for_answer(answer)
+      return Array(answer["tags"]) if answer["tags"].present?
+
+      choice_tags(answer["q"] || answer["question_id"], answer["c"] || answer["choice_key"])
+    end
   end
 end
