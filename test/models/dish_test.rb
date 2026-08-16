@@ -17,6 +17,30 @@ class DishTest < ActiveSupport::TestCase
     assert_includes dish.errors.full_messages, "カテゴリを入力してください"
   end
 
+  test "rejects invalid image_url format" do
+    dish = Dish.new(name: "URLテスト", category: :main, image_url: "not-a-url")
+
+    assert_not dish.valid?
+    assert_includes dish.errors[:image_url], "の形式が正しくありません"
+  end
+
+  test "allows blank image_url and recipe_url" do
+    dish = Dish.new(name: "URLテスト", category: :main)
+
+    assert dish.valid?
+  end
+
+  test "accepts http and https urls" do
+    dish = Dish.new(
+      name: "URLテスト",
+      category: :main,
+      image_url: "https://example.com/image.jpg",
+      recipe_url: "http://example.com/recipe"
+    )
+
+    assert dish.valid?
+  end
+
   test "match_by_tag_names returns dish with most matching tags" do
     dish = Dish.create!(name: "マッチテスト", category: :main)
     quick_tag = Tag.create!(name: "match_quick_#{SecureRandom.hex(4)}")

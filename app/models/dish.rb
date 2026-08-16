@@ -30,8 +30,12 @@ class Dish < ApplicationRecord
     drink: 7
   }
 
+  HTTP_URL_FORMAT = URI::DEFAULT_PARSER.make_regexp(%w[http https])
+
   validates :name, presence: true
   validates :category, presence: true
+  validates :image_url, format: { with: HTTP_URL_FORMAT }, allow_blank: true
+  validates :recipe_url, format: { with: HTTP_URL_FORMAT }, allow_blank: true
 
   def category_label
     CATEGORY_LABELS[category.to_sym]
