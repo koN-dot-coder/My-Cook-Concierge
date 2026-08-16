@@ -4,7 +4,7 @@
     <%= history_mode ? "DIAGNOSIS HISTORY" : "DIAGNOSIS COMPLETE" %>
   </p>
   <h1 class="text-2xl sm:text-3xl font-extrabold text-amber-950 tracking-tight mb-3">
-    <%= history_mode ? "あなたの専用メニュー" : "本日のあなた専用メニュー" %>
+    <%= history_mode ? "あなたの専用メニュー" : "本日の専用メニュー" %>
   </h1>
   <% if history_mode && diagnosed_at.present? %>
     <p class="text-xs text-amber-800/50 mb-2">
@@ -30,9 +30,6 @@
     <div class="grid md:grid-cols-2 gap-0">
       <%= render "diagnostics/dish_placeholder", large: true %>
       <div class="p-8 flex flex-col justify-center">
-        <p class="text-xs font-bold text-amber-600 mb-2">
-          <%= history_mode ? "おすすめの一品" : "TODAY'S PICK" %>
-        </p>
         <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-950 mb-3"><%= dish.name %></h2>
         <% if dish.description.present? %>
           <p class="text-sm text-gray-600 leading-relaxed mb-4"><%= dish.description %></p>

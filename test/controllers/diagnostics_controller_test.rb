@@ -43,8 +43,8 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     complete_diagnosis(question_count: 10)
 
     assert_response :success
-    assert_match "本日のあなた専用メニュー", response.body
-    assert_match "PICK", response.body
+    assert_match "本日の専用メニュー", response.body
+    assert_no_match "PICK", response.body
     assert_match "主食", response.body
     assert_match "主菜", response.body
     assert_match "ドリンク", response.body
@@ -116,12 +116,10 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     get diagnostic_history_url(history)
     assert_response :success
     assert_match "あなたの専用メニュー", response.body
-    assert_match "おすすめの一品", response.body
     assert_match history.dish.name, response.body
     assert_match "主食", response.body
     assert_match "主菜", response.body
-    assert_no_match "本日のあなた専用メニュー", response.body
-    assert_no_match "TODAY'S PICK", response.body
+    assert_no_match "本日の専用メニュー", response.body
   end
 
   test "saved history stores diagnosis snapshot" do
