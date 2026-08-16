@@ -6,7 +6,8 @@ export default class extends Controller {
     this.locked = false
   }
 
-  guard(event) {
+  // Block follow-up clicks without disabling the button (which would cancel submit).
+  prepare(event) {
     if (this.locked) {
       event.preventDefault()
       event.stopImmediatePropagation()
@@ -14,6 +15,10 @@ export default class extends Controller {
     }
 
     this.locked = true
+  }
+
+  // Safe to disable buttons once the form is actually submitting.
+  guard(_event) {
     this.element.querySelectorAll("button[type='submit']").forEach((button) => {
       button.disabled = true
       button.setAttribute("aria-busy", "true")
