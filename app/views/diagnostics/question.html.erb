@@ -25,7 +25,9 @@
         <p class="text-sm text-amber-900/55"><%= @question[:hint] %></p>
       </div>
 
-      <div class="space-y-3">
+      <div class="space-y-3"
+           data-controller="submit-once"
+           data-action="click->submit-once#guard:capture submit->submit-once#guard">
         <% @question[:choices].each do |choice| %>
           <%= button_to diagnostics_answer_path,
                 method: :post,
