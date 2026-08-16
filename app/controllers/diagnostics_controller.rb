@@ -76,28 +76,24 @@ class DiagnosticsController < ApplicationController
     question_order = session[:question_order] || []
     index = session[:current_question_index] || 0
 
-    if params[:skip].present?
-      session[:current_question_index] = index + 1
-    else
-      question = DiagnosticQuestionBank.find(question_order[index])
-      choice = question&.dig(:choices)&.find { |item| item[:key] == params[:choice_key] }
+    question = DiagnosticQuestionBank.find(question_order[index])
+    choice = question&.dig(:choices)&.find { |item| item[:key] == params[:choice_key] }
 
-      unless choice
-        redirect_to diagnostics_question_path, alert: "選択肢が正しくありません"
-        return
-      end
-
-      session[:answers] ||= []
-      session[:answers] << {
-        "question_index" => index,
-        "question_id" => question[:id],
-        "choice_key" => choice[:key],
-        "choice_label" => choice[:label],
-        "tags" => choice[:tags]
-      }
-
-      session[:current_question_index] = index + 1
+    unless choice
+      redirect_to diagnostics_question_path, alert: "選択肢が正しくありません"
+      return
     end
+
+    session[:answers] ||= []
+    session[:answers] << {
+      "question_index" => index,
+      "question_id" => question[:id],
+      "choice_key" => choice[:key],
+      "choice_label" => choice[:label],
+      "tags" => choice[:tags]
+    }
+
+    session[:current_question_index] = index + 1
 
     if session[:current_question_index] >= question_order.size
       redirect_to diagnostics_result_path

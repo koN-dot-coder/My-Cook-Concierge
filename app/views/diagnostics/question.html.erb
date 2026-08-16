@@ -45,11 +45,8 @@
         <% end %>
       </div>
 
-      <div class="mt-8 pt-6 border-t border-amber-50 flex items-center justify-between">
+      <div class="mt-8 pt-6 border-t border-amber-50">
         <%= link_to "← 戻る", root_path, class: "text-sm font-semibold text-amber-800/60 hover:text-amber-900 transition" %>
-        <%= button_to "スキップ", diagnostics_answer_path, method: :post, params: { skip: true },
-              form: { class: "inline-block" },
-              class: "text-sm font-semibold text-amber-800/60 hover:text-amber-900 transition cursor-pointer border-0 bg-transparent" %>
       </div>
     </div>
   </main>
