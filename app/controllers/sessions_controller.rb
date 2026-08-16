@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
   allow_unauthenticated_access only: %i[new create complete]
-  rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: "しばらく時間をおいてから再度お試しください。" }
 
   def new
   end
