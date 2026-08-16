@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class Rack::Attack
+  # Use a dedicated in-memory store so throttling does not depend on solid_cache tables.
+  cache.store = ActiveSupport::Cache::MemoryStore.new
+
   throttle("logins/ip", limit: 5, period: 20.minutes) do |req|
     req.ip if req.post? && req.path == "/session"
   end

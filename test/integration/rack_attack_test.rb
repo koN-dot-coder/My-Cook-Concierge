@@ -22,4 +22,21 @@ class RackAttackTest < ActionDispatch::IntegrationTest
     assert_response :too_many_requests
     assert_match "リクエストが多すぎます", response.body
   end
+
+  test "allows user registration" do
+    email = "rackattack-#{SecureRandom.hex(4)}@example.com"
+
+    assert_difference("User.count", 1) do
+      post registration_url, params: {
+        user: {
+          name: "レート制限テスト",
+          email_address: email,
+          password: "password123",
+          password_confirmation: "password123"
+        }
+      }
+    end
+
+    assert_redirected_to root_url
+  end
 end
