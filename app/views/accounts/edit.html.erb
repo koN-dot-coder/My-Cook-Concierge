@@ -29,23 +29,11 @@
         <div class="border-t border-amber-100 pt-6">
           <h2 class="text-sm font-bold text-gray-800 mb-4">パスワードの変更（任意）</h2>
           <div class="space-y-4">
-            <div>
-              <%= form.label :password, "新しいパスワード", class: "block text-sm font-bold text-gray-800 mb-2" %>
-              <%= form.password_field :password,
-                    autocomplete: "new-password",
-                    maxlength: 72,
-                    placeholder: "変更する場合のみ入力",
-                    class: "w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition" %>
-            </div>
+            <%= render "shared/password_field", form: form, field: :password, label: "新しいパスワード",
+                  object: @user, autocomplete: "new-password", maxlength: 72, placeholder: "変更する場合のみ入力" %>
 
-            <div>
-              <%= form.label :password_confirmation, "新しいパスワード（確認）", class: "block text-sm font-bold text-gray-800 mb-2" %>
-              <%= form.password_field :password_confirmation,
-                    autocomplete: "new-password",
-                    maxlength: 72,
-                    placeholder: "もう一度入力してください",
-                    class: "w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition" %>
-            </div>
+            <%= render "shared/password_field", form: form, field: :password_confirmation, label: "新しいパスワード（確認）",
+                  object: @user, autocomplete: "new-password", maxlength: 72, placeholder: "もう一度入力してください" %>
           </div>
         </div>
 

@@ -31,18 +31,8 @@
               </div>
             </div>
 
-            <div>
-              <%= form.label :password, "パスワード", class: "block text-sm font-bold text-gray-800 mb-2" %>
-              <div class="relative">
-                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" aria-hidden="true">🔒</span>
-                <%= form.password_field :password,
-                      required: true,
-                      autocomplete: "current-password",
-                      maxlength: 72,
-                      placeholder: "パスワードを入力",
-                      class: "w-full rounded-xl border border-amber-100 bg-white pl-11 pr-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition" %>
-              </div>
-            </div>
+            <%= render "shared/password_field", form: form, field: :password, label: "パスワード", icon: "🔒",
+                  object: nil, required: true, autocomplete: "current-password", maxlength: 72, placeholder: "パスワードを入力" %>
 
             <%= form.submit "ログイン",
                   class: "w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition cursor-pointer border-0" %>

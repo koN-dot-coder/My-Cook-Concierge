@@ -38,32 +38,11 @@
         <% end %>
       </div>
 
-      <div>
-        <%= form.label :password, "パスワード", class: "block text-sm font-bold text-gray-800 mb-2" %>
-        <div class="relative">
-          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" aria-hidden="true">🔒</span>
-          <%= form.password_field :password,
-                autocomplete: "new-password",
-                maxlength: 72,
-                placeholder: "8文字以上の半角英数字",
-                class: "w-full rounded-xl border border-amber-100 bg-white pl-11 pr-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition #{@user.errors[:password].any? ? 'border-red-300' : ''}" %>
-        </div>
-        <% if @user.errors[:password].any? %>
-          <p class="mt-1.5 text-xs font-semibold text-red-600"><%= @user.errors.full_messages_for(:password).first %></p>
-        <% end %>
-      </div>
+      <%= render "shared/password_field", form: form, field: :password, label: "パスワード", icon: "🔒",
+            object: @user, autocomplete: "new-password", maxlength: 72, placeholder: "8文字以上の半角英数字" %>
 
-      <div>
-        <%= form.label :password_confirmation, "パスワード（確認）", class: "block text-sm font-bold text-gray-800 mb-2" %>
-        <div class="relative">
-          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" aria-hidden="true">↻</span>
-          <%= form.password_field :password_confirmation,
-                autocomplete: "new-password",
-                maxlength: 72,
-                placeholder: "もう一度入力してください",
-                class: "w-full rounded-xl border border-amber-100 bg-white pl-11 pr-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition" %>
-        </div>
-      </div>
+      <%= render "shared/password_field", form: form, field: :password_confirmation, label: "パスワード（確認）", icon: "↻",
+            object: @user, autocomplete: "new-password", maxlength: 72, placeholder: "もう一度入力してください" %>
 
       <div class="space-y-3 rounded-xl border border-amber-100 bg-amber-50/30 p-4">
         <label class="flex items-start gap-2 text-xs text-amber-900/70 cursor-pointer">
