@@ -20,34 +20,10 @@
   </p>
 </div>
 
-<% if dish.nil? %>
+<% if dish.nil? && recommendations_by_category.values.flatten.empty? %>
   <div class="bg-white rounded-2xl border border-amber-200 p-8 mb-10 text-center">
     <p class="text-sm text-amber-900/70 mb-2">おすすめメニューを表示する料理データがまだ登録されていません。</p>
     <p class="text-xs text-amber-800/50">開発環境では <code class="bg-amber-50 px-1.5 py-0.5 rounded">rails db:seed</code> を実行してください。</p>
-  </div>
-<% elsif dish %>
-  <div class="bg-white rounded-3xl shadow-lg border border-amber-200 overflow-hidden mb-10">
-    <div class="grid md:grid-cols-2 gap-0">
-      <%= render "diagnostics/dish_placeholder", large: true %>
-      <div class="p-8 flex flex-col justify-center">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-950 mb-3"><%= dish.name %></h2>
-        <% if dish.description.present? %>
-          <p class="text-sm text-gray-600 leading-relaxed mb-4"><%= dish.description %></p>
-        <% end %>
-        <span class="inline-block self-start text-xs font-semibold text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-3 py-1 mb-4">
-          <%= dish.category_label %>
-        </span>
-        <div class="mb-6">
-          <%= render "favorites/button", dish: dish, favorite_dish_ids: favorite_dish_ids %>
-        </div>
-        <% if dish.recipe_url.present? %>
-          <%= link_to dish.recipe_url, target: "_blank", rel: "noopener",
-                class: "inline-flex self-start items-center gap-2 py-3 px-6 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition text-sm" do %>
-            レシピを見る →
-          <% end %>
-        <% end %>
-      </div>
-    </div>
   </div>
 <% end %>
 
@@ -61,7 +37,7 @@
     </h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <% section_dishes.each do |section_dish| %>
-        <article class="bg-white rounded-2xl shadow-sm border border-amber-100/80 overflow-hidden hover:shadow-md hover:border-amber-200 transition-all <%= section_dish == dish ? 'ring-2 ring-amber-400' : '' %>">
+        <article class="bg-white rounded-2xl shadow-sm border border-amber-100/80 overflow-hidden hover:shadow-md hover:border-amber-200 transition-all">
           <%= render "diagnostics/dish_placeholder" %>
           <div class="p-4">
             <h3 class="font-bold text-gray-900 text-sm mb-1"><%= section_dish.name %></h3>
