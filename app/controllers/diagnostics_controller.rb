@@ -77,6 +77,12 @@ class DiagnosticsController < ApplicationController
     index = session[:current_question_index] || 0
 
     question = DiagnosticQuestionBank.find(question_order[index])
+
+    if params[:question_id].present? && params[:question_id] != question&.dig(:id)
+      redirect_to diagnostics_question_path
+      return
+    end
+
     choice = question&.dig(:choices)&.find { |item| item[:key] == params[:choice_key] }
 
     unless choice

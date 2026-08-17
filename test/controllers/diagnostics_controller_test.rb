@@ -198,6 +198,28 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to diagnostics_question_url
   end
 
+  test "answer ignores stale question id from rapid clicks" do
+    post diagnostics_start_url, params: { question_count: 10 }
+    follow_redirect!
+
+    first_question = DiagnosticQuestionBank.find(session[:question_order].first)
+    post diagnostics_answer_url, params: {
+      choice_key: first_question[:choices].first[:key],
+      question_id: first_question[:id]
+    }
+    follow_redirect!
+    assert_equal 1, session[:current_question_index]
+
+    post diagnostics_answer_url, params: {
+      choice_key: first_question[:choices].first[:key],
+      question_id: first_question[:id]
+    }
+    assert_redirected_to diagnostics_question_url
+    follow_redirect!
+    assert_equal 1, session[:current_question_index]
+    assert_equal 1, session[:answers].size
+  end
+
   test "result requires completed diagnosis" do
     get diagnostics_result_url
     assert_redirected_to root_url
@@ -221,7 +243,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     post diagnostics_start_url, params: { question_count: 10 }
     follow_redirect!
 
-    post diagnostics_answer_url, params: { choice_key: "refreshed" }
+    post diagnostics_answer_url, params: { choice_key: "refreshed", question_id: "mood" }
     follow_redirect!
     assert_match "Question 2 of 10", response.body
 
@@ -260,7 +282,10 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
 
     session[:question_order].each do |question_id|
       question = DiagnosticQuestionBank.find(question_id)
-      post diagnostics_answer_url, params: { choice_key: question[:choices].first[:key] }
+      post diagnostics_answer_url, params: {
+        choice_key: question[:choices].first[:key],
+        question_id: question[:id]
+      }
       follow_redirect!
     end
   end

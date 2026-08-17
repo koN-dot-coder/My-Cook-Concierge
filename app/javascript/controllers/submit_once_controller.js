@@ -1,42 +1,62 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Prevents duplicate form submissions when users click diagnosis choices rapidly.
+// Prevents duplicate form submissions across all diagnosis question forms.
 export default class extends Controller {
+  static values = { timeout: { type: Number, default: 30000 } }
+
   connect() {
-    this.locked = false
+    this.busy = false
+    this.safetyTimer = null
   }
 
-  // Block follow-up clicks without disabling the button (which would cancel submit).
-  prepare(event) {
-    if (this.locked) {
+  disconnect() {
+    this.clearSafetyTimer()
+  }
+
+  // Capture phase blocks a second form submit while one is in flight.
+  guard(event) {
+    if (this.busy) {
       event.preventDefault()
       event.stopImmediatePropagation()
       return
     }
 
-    this.locked = true
+    this.busy = true
+    this.setBusy(true)
+    this.startSafetyTimer()
   }
 
-  // Disable UI only after Turbo has started the request.
-  submitStart() {
-    this.element.classList.add("opacity-70", "pointer-events-none")
-    this.setButtonsBusy(true)
-  }
-
-  // Re-enable when submission fails so the user is not stuck on the same question.
   complete(event) {
     if (event.detail.success) return
 
     this.reset()
   }
 
-  reset() {
-    this.locked = false
-    this.element.classList.remove("opacity-70", "pointer-events-none")
-    this.setButtonsBusy(false)
+  clearTimer() {
+    this.clearSafetyTimer()
   }
 
-  setButtonsBusy(busy) {
+  reset() {
+    this.busy = false
+    this.clearSafetyTimer()
+    this.setBusy(false)
+  }
+
+  startSafetyTimer() {
+    this.clearSafetyTimer()
+    this.safetyTimer = window.setTimeout(() => this.reset(), this.timeoutValue)
+  }
+
+  clearSafetyTimer() {
+    if (this.safetyTimer) {
+      window.clearTimeout(this.safetyTimer)
+      this.safetyTimer = null
+    }
+  }
+
+  setBusy(busy) {
+    this.element.classList.toggle("opacity-70", busy)
+    this.element.classList.toggle("pointer-events-none", busy)
     this.element.querySelectorAll("button[type='submit']").forEach((button) => {
       button.disabled = busy
       button.toggleAttribute("aria-busy", busy)

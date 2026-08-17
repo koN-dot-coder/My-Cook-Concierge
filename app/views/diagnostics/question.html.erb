@@ -4,7 +4,9 @@
   <%= render "layouts/site_header" %>
 
   <main class="flex-1 flex items-center justify-center px-4 py-10">
-    <div class="max-w-lg w-full">
+    <div class="max-w-lg w-full"
+         data-controller="submit-once"
+         data-action="submit->submit-once#guard:capture turbo:submit-end->submit-once#complete turbo:before-visit@window->submit-once#clearTimer">
       <div class="mb-3">
         <%= button_to "やめる",
               diagnostics_quit_path,
@@ -35,13 +37,11 @@
           <p class="text-sm text-amber-900/55"><%= @question[:hint] %></p>
         </div>
 
-        <div class="space-y-3"
-             data-controller="submit-once"
-             data-action="click->submit-once#prepare:capture turbo:submit-start->submit-once#submitStart turbo:submit-end->submit-once#complete">
+        <div class="space-y-3">
           <% @question[:choices].each do |choice| %>
             <%= button_to diagnostics_answer_path,
                   method: :post,
-                  params: { choice_key: choice[:key] },
+                  params: { choice_key: choice[:key], question_id: @question[:id] },
                   form: { class: "w-full" },
                   class: "w-full text-left p-4 bg-white border-2 border-amber-100 rounded-2xl hover:border-amber-400 hover:bg-amber-50/40 transition-all group cursor-pointer flex items-center gap-4" do %>
               <span class="w-12 h-12 rounded-xl bg-amber-50 text-2xl flex items-center justify-center shrink-0 group-hover:bg-amber-100 transition" aria-hidden="true">
