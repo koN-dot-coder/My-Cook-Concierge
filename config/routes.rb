@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   post "diagnostics/start", to: "diagnostics#start"
   get "diagnostics/question", to: "diagnostics#question"
   post "diagnostics/answer", to: "diagnostics#answer"
+  post "diagnostics/back", to: "diagnostics#back", as: :diagnostics_back
+  delete "diagnostics/quit", to: "diagnostics#quit", as: :diagnostics_quit
   get "diagnostics/result", to: "diagnostics#result"
   get "diagnostics/histories", to: "diagnostics#history_index", as: :diagnostic_histories
   delete "diagnostics/histories", to: "diagnostics#history_clear", as: :clear_diagnostic_histories

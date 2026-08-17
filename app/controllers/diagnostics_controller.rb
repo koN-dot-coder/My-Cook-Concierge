@@ -1,5 +1,5 @@
 class DiagnosticsController < ApplicationController
-  allow_unauthenticated_access only: %i[top start question answer result]
+  allow_unauthenticated_access only: %i[top start question answer back quit result]
   ALLOWED_QUESTION_COUNTS = [10, 20, 30].freeze
 
   COURSE_LABELS = {
@@ -37,11 +37,11 @@ class DiagnosticsController < ApplicationController
       return
     end
 
+    clear_diagnostic_session!
     session[:question_count] = count
     session[:question_order] = DiagnosticQuestionBank.build_question_order(count)
     session[:current_question_index] = 0
     session[:answers] = []
-    session.delete(:history_saved)
 
     redirect_to diagnostics_question_path
   end
@@ -99,6 +99,30 @@ class DiagnosticsController < ApplicationController
     end
   end
 
+  def back
+    unless session[:question_count]
+      redirect_to root_path, alert: "先にコースを選んでください"
+      return
+    end
+
+    index = session[:current_question_index] || 0
+
+    if index <= 0
+      redirect_to diagnostics_question_path, alert: "これ以上戻れません"
+      return
+    end
+
+    session[:current_question_index] = index - 1
+    session[:answers]&.pop
+
+    redirect_to diagnostics_question_path
+  end
+
+  def quit
+    clear_diagnostic_session!
+    redirect_to root_path, notice: "診断を終了しました"
+  end
+
   def result
     unless session[:answers].present?
       redirect_to root_path, alert: "診断が完了していません"
@@ -145,6 +169,14 @@ class DiagnosticsController < ApplicationController
   end
 
   private
+
+  def clear_diagnostic_session!
+    session.delete(:question_count)
+    session.delete(:question_order)
+    session.delete(:current_question_index)
+    session.delete(:answers)
+    session.delete(:history_saved)
+  end
 
   def ensure_dish_catalog!
     return unless Dish.none?

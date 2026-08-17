@@ -203,6 +203,55 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test "quit clears diagnostic session and returns to top" do
+    post diagnostics_start_url, params: { question_count: 10 }
+    follow_redirect!
+
+    delete diagnostics_quit_url
+
+    assert_redirected_to root_url
+    assert_nil session[:question_count]
+    assert_nil session[:answers]
+
+    get diagnostics_question_url
+    assert_redirected_to root_url
+  end
+
+  test "back returns to previous question" do
+    post diagnostics_start_url, params: { question_count: 10 }
+    follow_redirect!
+
+    post diagnostics_answer_url, params: { choice_key: "refreshed" }
+    follow_redirect!
+    assert_match "Question 2 of 10", response.body
+
+    post diagnostics_back_url
+    assert_redirected_to diagnostics_question_url
+    follow_redirect!
+
+    assert_match "Question 1 of 10", response.body
+    assert_equal 0, session[:current_question_index]
+    assert_equal [], session[:answers]
+  end
+
+  test "back on first question redirects with alert" do
+    post diagnostics_start_url, params: { question_count: 10 }
+    follow_redirect!
+
+    post diagnostics_back_url
+
+    assert_redirected_to diagnostics_question_url
+    assert_equal 0, session[:current_question_index]
+  end
+
+  test "first question shows quit but not previous question link" do
+    post diagnostics_start_url, params: { question_count: 10 }
+    follow_redirect!
+
+    assert_match "やめる", response.body
+    assert_no_match "前の質問", response.body
+  end
+
   private
 
   def complete_diagnosis(question_count: 10)
