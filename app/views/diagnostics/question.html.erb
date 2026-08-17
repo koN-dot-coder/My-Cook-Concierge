@@ -27,7 +27,7 @@
 
       <div class="space-y-3"
            data-controller="submit-once"
-           data-action="click->submit-once#prepare:capture submit->submit-once#guard">
+           data-action="click->submit-once#prepare:capture turbo:submit-start->submit-once#submitStart turbo:submit-end->submit-once#complete">
         <% @question[:choices].each do |choice| %>
           <%= button_to diagnostics_answer_path,
                 method: :post,

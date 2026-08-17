@@ -17,12 +17,30 @@ export default class extends Controller {
     this.locked = true
   }
 
-  // Safe to disable buttons once the form is actually submitting.
-  guard(_event) {
+  // Disable UI only after Turbo has started the request.
+  submitStart() {
+    this.element.classList.add("opacity-70", "pointer-events-none")
+    this.setButtonsBusy(true)
+  }
+
+  // Re-enable when submission fails so the user is not stuck on the same question.
+  complete(event) {
+    if (event.detail.success) return
+
+    this.reset()
+  }
+
+  reset() {
+    this.locked = false
+    this.element.classList.remove("opacity-70", "pointer-events-none")
+    this.setButtonsBusy(false)
+  }
+
+  setButtonsBusy(busy) {
     this.element.querySelectorAll("button[type='submit']").forEach((button) => {
-      button.disabled = true
-      button.setAttribute("aria-busy", "true")
-      button.classList.add("opacity-60", "cursor-wait")
+      button.disabled = busy
+      button.toggleAttribute("aria-busy", busy)
+      button.classList.toggle("cursor-wait", busy)
     })
   }
 }
