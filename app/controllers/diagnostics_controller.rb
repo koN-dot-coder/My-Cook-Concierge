@@ -200,7 +200,7 @@ class DiagnosticsController < ApplicationController
     return unless current_user
     return if session[:history_saved]
 
-    recommendations_payload = @recommendations_by_category.transform_values do |dishes|
+    recommendations_payload = @recommendations_by_category.transform_keys(&:to_s).transform_values do |dishes|
       dishes.map(&:id)
     end
 
@@ -212,5 +212,7 @@ class DiagnosticsController < ApplicationController
       recommendations: recommendations_payload
     )
     session[:history_saved] = true
+  rescue ActiveRecord::ActiveRecordError => e
+    Rails.logger.error("[DiagnosticsController] Failed to save history: #{e.class}: #{e.message}")
   end
 end

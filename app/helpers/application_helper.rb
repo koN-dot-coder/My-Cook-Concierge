@@ -6,11 +6,11 @@ module ApplicationHelper
   def dish_image_src(source)
     return nil if source.blank?
 
-    if source.start_with?("/")
+    if source.start_with?("/images/dishes/")
+      source
+    elsif source.start_with?("/")
       public_file = Rails.root.join("public", source.delete_prefix("/"))
-      return source if File.exist?(public_file)
-
-      nil
+      File.exist?(public_file) ? source : nil
     else
       source
     end
