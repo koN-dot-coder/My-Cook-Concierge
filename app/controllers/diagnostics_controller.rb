@@ -12,25 +12,15 @@ class DiagnosticsController < ApplicationController
     featured_titles = [
       { title: "ミートソースパスタ", minutes: 15 },
       { title: "オムライス", minutes: 10 },
-      { title: "ミネストローネ", minutes: 20 }
+      { title: "ミネストローネ", minutes: 20 },
+      { title: "親子丼", minutes: 15 },
+      { title: "唐揚げ", minutes: 25 },
+      { title: "レモネード", minutes: 5 }
     ]
     dishes_by_name = Dish.where(name: featured_titles.pluck(:title)).index_by(&:name)
     @featured_recipes = featured_titles.map do |recipe|
       recipe.merge(dish: dishes_by_name[recipe[:title]])
     end
-
-    @chef_tips = [
-      {
-        title: "旬の食材を活かすコツ",
-        body: "今の時期に美味しい野菜の選び方と保存法をご紹介。",
-        icon: "lightbulb"
-      },
-      {
-        title: "失敗しない下味の黄金比",
-        body: "肉・魚・野菜別の基本の味つけバランスをチェック。",
-        icon: "target"
-      }
-    ]
   end
 
   def start

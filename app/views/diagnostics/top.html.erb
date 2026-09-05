@@ -136,7 +136,7 @@
 
       <div class="flex items-end justify-between mb-5">
 
-        <h2 class="text-lg sm:text-xl font-bold text-amber-950">今日の注目レシピ</h2>
+        <h2 class="text-lg sm:text-xl font-bold text-amber-950">今日のおすすめ料理</h2>
 
       </div>
 
@@ -165,40 +165,6 @@
                 <%= recipe[:minutes] %>分
 
               </p>
-
-            </div>
-
-          </article>
-
-        <% end %>
-
-      </div>
-
-    </section>
-
-
-
-    <section>
-
-      <h2 class="text-lg sm:text-xl font-bold text-amber-950 mb-5">料理家の知恵袋</h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-
-        <% @chef_tips.each do |tip| %>
-
-          <article class="bg-white rounded-2xl shadow-sm border border-amber-100/70 p-5 flex gap-4 items-start">
-
-            <div class="w-12 h-12 rounded-xl bg-orange-50 text-amber-800 flex items-center justify-center shrink-0 text-xl">
-
-              <%= tip[:icon] == "lightbulb" ? "💡" : "🎯" %>
-
-            </div>
-
-            <div class="min-w-0 pt-0.5">
-
-              <h3 class="font-bold text-slate-800 mb-1"><%= tip[:title] %></h3>
-
-              <p class="text-sm text-amber-900/60 leading-relaxed"><%= tip[:body] %></p>
 
             </div>
 

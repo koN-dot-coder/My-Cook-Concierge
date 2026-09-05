@@ -12,8 +12,7 @@ class DiagnosticsControllerTest < ActionDispatch::IntegrationTest
     get diagnostics_top_url
     assert_response :success
     assert_match "かんたん", response.body
-    assert_match "今日の注目レシピ", response.body
-    assert_match "料理家の知恵袋", response.body
+    assert_match "今日のおすすめ料理", response.body
   end
 
   test "start saves question count and redirects to question" do
