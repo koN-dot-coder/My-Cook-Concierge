@@ -41,6 +41,16 @@ class DishTest < ActiveSupport::TestCase
     assert dish.valid?
   end
 
+  test "accepts local image path under public/images/dishes" do
+    dish = Dish.new(
+      name: "URLテスト",
+      category: :main,
+      image_url: "/images/dishes/oyakodon.jpg"
+    )
+
+    assert dish.valid?
+  end
+
   test "match_by_tag_names returns dish with most matching tags" do
     dish = Dish.create!(name: "マッチテスト", category: :main)
     quick_tag = Tag.create!(name: "match_quick_#{SecureRandom.hex(4)}")

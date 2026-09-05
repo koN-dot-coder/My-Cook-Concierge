@@ -9,11 +9,15 @@ class DiagnosticsController < ApplicationController
   }.freeze
 
   def top
-    @featured_recipes = [
-      { title: "春野菜の彩りパスタ", minutes: 15 },
-      { title: "かんたんクリーム親子丼", minutes: 10 },
-      { title: "具だくさんミネストローネ", minutes: 20 }
+    featured_titles = [
+      { title: "ミートソースパスタ", minutes: 15 },
+      { title: "オムライス", minutes: 10 },
+      { title: "ミネストローネ", minutes: 20 }
     ]
+    dishes_by_name = Dish.where(name: featured_titles.pluck(:title)).index_by(&:name)
+    @featured_recipes = featured_titles.map do |recipe|
+      recipe.merge(dish: dishes_by_name[recipe[:title]])
+    end
 
     @chef_tips = [
       {

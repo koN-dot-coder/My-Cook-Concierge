@@ -3,7 +3,7 @@ require "test_helper"
 class HistoryTest < ActiveSupport::TestCase
   setup do
     Rails.application.load_seed if Dish.none?
-    @dish = Dish.find_by!(name: "かんたんクリーム親子丼")
+    @dish = Dish.find_by!(name: "オムライス")
     @staple = Dish.find_by!(name: "親子丼")
   end
 

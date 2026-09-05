@@ -5,7 +5,7 @@
     <%= form.label :name, class: "block text-sm font-bold text-gray-800 mb-2" %>
     <%= form.text_field :name,
           class: "w-full rounded-xl border bg-white px-4 py-3 text-gray-900 focus:ring-2 outline-none transition #{dish.errors[:name].any? ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-amber-100 focus:border-amber-400 focus:ring-amber-200'}",
-          placeholder: "例: 春野菜の彩りパスタ" %>
+          placeholder: "例: ミートソースパスタ" %>
     <% if dish.errors[:name].any? %>
       <p class="mt-2 text-xs font-semibold text-red-600"><%= dish.errors.full_messages_for(:name).first %></p>
     <% end %>
@@ -31,9 +31,10 @@
 
   <div>
     <%= form.label :image_url, class: "block text-sm font-bold text-gray-800 mb-2" %>
-    <%= form.url_field :image_url,
+    <%= form.text_field :image_url,
           class: "w-full rounded-xl border border-amber-100 bg-white px-4 py-3 text-gray-900 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 outline-none transition",
-          placeholder: "https://example.com/image.jpg" %>
+          placeholder: "/images/dishes/oyakodon.jpg" %>
+    <p class="mt-1 text-xs text-gray-500">public/images/dishes/ に置いたファイル名を指定（例: /images/dishes/oyakodon.jpg）</p>
   </div>
 
   <div>

@@ -1,4 +1,14 @@
-<%# locals: (large: false) %>
-<div class="<%= large ? "aspect-[4/3] md:aspect-auto min-h-[12rem]" : "aspect-[4/3]" %> bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center text-4xl">
-  🍽️
-</div>
+<%# locals: (dish: nil, image_url: nil, alt: nil, large: false) %>
+<% src = dish_image_src(image_url) || dish_image_src_for(dish) %>
+<% alt_text = alt.presence || dish&.name || "料理の写真" %>
+<% wrapper_class = large ? "aspect-[4/3] md:aspect-auto min-h-[12rem]" : "aspect-[4/3]" %>
+
+<% if src.present? %>
+  <div class="<%= wrapper_class %> overflow-hidden bg-amber-50">
+    <%= image_tag src, alt: alt_text, class: "w-full h-full object-cover", loading: "lazy" %>
+  </div>
+<% else %>
+  <div class="<%= wrapper_class %> bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center text-4xl" aria-hidden="true">
+    🍽️
+  </div>
+<% end %>

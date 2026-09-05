@@ -31,14 +31,21 @@ class Dish < ApplicationRecord
   }
 
   HTTP_URL_FORMAT = URI::DEFAULT_PARSER.make_regexp(%w[http https])
+  LOCAL_IMAGE_PATH_FORMAT = %r{\A/images/dishes/[^/\s]+\z}
 
   validates :name, presence: true
   validates :category, presence: true
-  validates :image_url, format: { with: HTTP_URL_FORMAT }, allow_blank: true
+  validate :image_url_format, if: -> { image_url.present? }
   validates :recipe_url, format: { with: HTTP_URL_FORMAT }, allow_blank: true
 
   def category_label
     CATEGORY_LABELS[category.to_sym]
+  end
+
+  def image_url_format
+    return if image_url.match?(HTTP_URL_FORMAT) || image_url.match?(LOCAL_IMAGE_PATH_FORMAT)
+
+    errors.add(:image_url, :invalid)
   end
 
   def self.match_by_tag_names(tag_names, category: nil, limit: 1)

@@ -37,11 +37,19 @@
         </div>
       <% end %>
 
-      <% if @dish.image_url.present? %>
+      <% image_src = dish_image_src_for(@dish) %>
+      <% if image_src.present? %>
         <div class="mb-6">
-          <p class="text-xs font-bold text-gray-500 mb-2">画像URL</p>
-          <%= link_to @dish.image_url, @dish.image_url, target: "_blank", rel: "noopener",
-                class: "text-sm text-amber-700 hover:text-amber-900 break-all" %>
+          <p class="text-xs font-bold text-gray-500 mb-2">写真</p>
+          <div class="aspect-[4/3] max-w-sm overflow-hidden rounded-xl bg-amber-50">
+            <%= image_tag image_src, alt: @dish.name, class: "w-full h-full object-cover" %>
+          </div>
+        </div>
+      <% elsif @dish.image_url.present? %>
+        <div class="mb-6">
+          <p class="text-xs font-bold text-gray-500 mb-2">画像パス</p>
+          <p class="text-sm text-gray-600 break-all"><%= @dish.image_url %></p>
+          <p class="text-xs text-amber-700 mt-1">画像ファイルがまだ public にありません</p>
         </div>
       <% end %>
 
