@@ -10,16 +10,16 @@ class DiagnosticsController < ApplicationController
 
   def top
     featured_titles = [
-      { title: "ミートソースパスタ", minutes: 15 },
-      { title: "オムライス", minutes: 10 },
-      { title: "ミネストローネ", minutes: 20 },
-      { title: "親子丼", minutes: 15 },
-      { title: "唐揚げ", minutes: 25 },
-      { title: "レモネード", minutes: 5 }
+      "ミートソースパスタ",
+      "オムライス",
+      "ミネストローネ",
+      "親子丼",
+      "唐揚げ",
+      "レモネード"
     ]
-    dishes_by_name = Dish.where(name: featured_titles.pluck(:title)).index_by(&:name)
-    @featured_recipes = featured_titles.map do |recipe|
-      recipe.merge(dish: dishes_by_name[recipe[:title]])
+    dishes_by_name = Dish.where(name: featured_titles).index_by(&:name)
+    @featured_recipes = featured_titles.map do |title|
+      { title: title, dish: dishes_by_name[title] }
     end
   end
 
