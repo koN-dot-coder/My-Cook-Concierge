@@ -7,8 +7,17 @@ export default class extends Controller {
     const visible = this.inputTarget.type === "text"
 
     this.inputTarget.type = visible ? "password" : "text"
-    this.showIconTarget.classList.toggle("hidden", !visible)
-    this.hideIconTarget.classList.toggle("hidden", visible)
-    this.toggleTarget.setAttribute("aria-label", visible ? "パスワードを表示" : "パスワードを隠す")
+    this.syncUi()
+  }
+
+  syncUi() {
+    const isVisible = this.inputTarget.type === "text"
+
+    this.showIconTarget.classList.toggle("hidden", !isVisible)
+    this.hideIconTarget.classList.toggle("hidden", isVisible)
+    this.toggleTarget.setAttribute(
+      "aria-label",
+      isVisible ? "パスワードを表示" : "パスワードを隠す"
+    )
   }
 }
