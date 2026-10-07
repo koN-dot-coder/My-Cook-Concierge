@@ -12,6 +12,10 @@
 
     <div class="flex items-center gap-2 sm:gap-3 shrink-0">
       <% if authenticated? %>
+        <%= link_to "設定",
+              edit_account_path,
+              class: "sm:hidden text-xs font-bold text-amber-800 hover:text-amber-950 px-3 py-2 rounded-lg hover:bg-amber-50 transition",
+              title: "アカウント設定" %>
         <%= link_to current_user.name,
               edit_account_path,
               class: "hidden sm:inline text-sm font-medium text-amber-800 max-w-[8rem] truncate hover:text-amber-950 transition-colors",
