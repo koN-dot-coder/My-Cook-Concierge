@@ -7,6 +7,6 @@ class CreateDishTags < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :dish_tags, [:dish_id, :tag_id], unique: true
+    add_index :dish_tags, [ :dish_id, :tag_id ], unique: true
   end
 end

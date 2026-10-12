@@ -1,6 +1,6 @@
 class DiagnosticsController < ApplicationController
   allow_unauthenticated_access only: %i[top start question answer back quit result]
-  ALLOWED_QUESTION_COUNTS = [10, 20, 30].freeze
+  ALLOWED_QUESTION_COUNTS = [ 10, 20, 30 ].freeze
 
   COURSE_LABELS = {
     10 => "かんたんコース",

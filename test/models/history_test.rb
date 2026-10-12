@@ -24,15 +24,15 @@ class HistoryTest < ActiveSupport::TestCase
       question_count: 10,
       collected_tags: %w[japanese umami],
       recommendations: {
-        "main" => [@dish.id],
-        "staple" => [@staple.id]
+        "main" => [ @dish.id ],
+        "staple" => [ @staple.id ]
       }
     )
 
     recommendations = history.recommendations_by_category
 
-    assert_equal [@dish], recommendations[:main]
-    assert_equal [@staple], recommendations[:staple]
+    assert_equal [ @dish ], recommendations[:main]
+    assert_equal [ @staple ], recommendations[:staple]
   end
 
   test "legacy history falls back to featured dish only" do
@@ -40,7 +40,7 @@ class HistoryTest < ActiveSupport::TestCase
 
     recommendations = history.recommendations_by_category
 
-    assert_equal [@dish], recommendations[:main]
+    assert_equal [ @dish ], recommendations[:main]
     assert_empty recommendations[:staple]
   end
 end

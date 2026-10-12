@@ -375,11 +375,11 @@ class DiagnosticQuestionBank
 
     def questions_for_count(count)
       max_tier = case count
-                 when 10 then 1
-                 when 20 then 2
-                 when 30 then 3
-                 else 1
-                 end
+      when 10 then 1
+      when 20 then 2
+      when 30 then 3
+      else 1
+      end
 
       questions_for_tiers(1..max_tier)
     end
