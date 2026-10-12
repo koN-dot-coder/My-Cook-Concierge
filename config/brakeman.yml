@@ -1,0 +1,4 @@
+---
+# Brakeman 8.0.x: skip_checks uses the Check* class name (see warning "Check: EOLRails").
+skip_checks:
+  - CheckEOLRails

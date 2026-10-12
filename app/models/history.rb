@@ -22,7 +22,7 @@ class History < ApplicationRecord
 
   def legacy_recommendations_by_category
     Dish::CATEGORY_DISPLAY_ORDER.index_with { [] }.tap do |categories|
-      categories[:main] = [dish] if dish
+      categories[:main] = [ dish ] if dish
     end
   end
 end

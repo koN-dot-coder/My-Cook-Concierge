@@ -53,10 +53,10 @@
         </div>
       <% end %>
 
-      <% if @dish.recipe_url.present? %>
+      <% if (recipe_url = validated_http_url(@dish.recipe_url)) %>
         <div class="mb-8">
           <p class="text-xs font-bold text-gray-500 mb-2">レシピURL</p>
-          <%= link_to @dish.recipe_url, @dish.recipe_url, target: "_blank", rel: "noopener",
+          <%= link_to recipe_url, recipe_url, target: "_blank", rel: "noopener",
                 class: "text-sm text-amber-700 hover:text-amber-900 break-all" %>
         </div>
       <% end %>

@@ -12,7 +12,7 @@ class DishesControllerTest < ActionDispatch::IntegrationTest
       category: :main,
       image_url: "https://example.com/image.jpg",
       recipe_url: "https://example.com/recipe",
-      tag_ids: [@tag_one.id]
+      tag_ids: [ @tag_one.id ]
     )
   end
 
@@ -47,7 +47,7 @@ class DishesControllerTest < ActionDispatch::IntegrationTest
           name: "新規料理",
           description: "新規説明",
           category: "soup",
-          tag_ids: [@tag_one.id]
+          tag_ids: [ @tag_one.id ]
         }
       }
     end
@@ -66,14 +66,14 @@ class DishesControllerTest < ActionDispatch::IntegrationTest
           category: "soup",
           image_url: "https://example.com/new.jpg",
           recipe_url: "https://example.com/new-recipe",
-          tag_ids: [@tag_one.id, @tag_two.id]
+          tag_ids: [ @tag_one.id, @tag_two.id ]
         }
       }
     end
 
     created_dish = Dish.last
     assert_redirected_to dish_url(created_dish)
-    assert_equal [@tag_one.id, @tag_two.id].sort, created_dish.tag_ids.sort
+    assert_equal [ @tag_one.id, @tag_two.id ].sort, created_dish.tag_ids.sort
     follow_redirect!
     assert_match "料理を登録しました", response.body
   end
@@ -89,14 +89,14 @@ class DishesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@admin)
 
     patch dish_url(@dish), params: {
-      dish: { name: "更新後の料理名", category: "dessert", tag_ids: [@tag_two.id] }
+      dish: { name: "更新後の料理名", category: "dessert", tag_ids: [ @tag_two.id ] }
     }
 
     assert_redirected_to dish_url(@dish)
     @dish.reload
     assert_equal "更新後の料理名", @dish.name
     assert @dish.dessert?
-    assert_equal [@tag_two.id], @dish.tag_ids
+    assert_equal [ @tag_two.id ], @dish.tag_ids
   end
 
   test "admin should destroy dish" do

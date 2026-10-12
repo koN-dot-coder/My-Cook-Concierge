@@ -63,7 +63,7 @@ class DishTest < ActiveSupport::TestCase
     other_dish = Dish.create!(name: "別料理", category: :soup)
     DishTag.create!(dish: other_dish, tag: quick_tag)
 
-    result = Dish.match_by_tag_names([quick_tag.name, japanese_tag.name, other_tag.name])
+    result = Dish.match_by_tag_names([ quick_tag.name, japanese_tag.name, other_tag.name ])
     assert_equal dish, result.first
   end
 

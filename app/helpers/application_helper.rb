@@ -19,4 +19,11 @@ module ApplicationHelper
   def dish_image_src_for(dish)
     dish_image_src(dish&.image_url)
   end
+
+  def validated_http_url(url)
+    return if url.blank?
+
+    string = url.to_s.strip
+    string if string.match?(Dish::HTTP_URL_FORMAT)
+  end
 end
